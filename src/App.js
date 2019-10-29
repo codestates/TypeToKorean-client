@@ -6,12 +6,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: 'this is test page'
+      data: 'this is test page',
     };
   }
 
   render() {
-    return <div>{this.state.data}</div>;
+    const { data } = this.state;
+
+    return <div>{data}</div>;
   }
 }
 

@@ -5,8 +5,15 @@ export default class InputText extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startFullLog: {},
-      endFullLog: {},
+      startFullLog: {
+        test: 'this is test data - start',
+      },
+      endFullLog: {
+        test: 'this is test data - end',
+      },
+      speedFullLog: {
+        test: 'this is test data - speed',
+      },
     };
 
     this.handleEvent = this.handleEvent.bind(this);
@@ -37,6 +44,7 @@ export default class InputText extends React.Component {
     if (event.type === 'compositionend') {
       endFullLog[event.data] = event.timeStamp; // 작성 완료된 글자를 비교
       console.log(endFullLog);
+
       this.oneCharSpeed =
         startFullLog[this.textToWrite[this.count]] -
         endFullLog[this.textToWrite[this.count]];
@@ -48,11 +56,19 @@ export default class InputText extends React.Component {
       console.log(
         `${JSON.stringify(startFullLog)}, ${JSON.stringify(endFullLog)}`, // 두 글자의 속도 비교
       );
+      this.setState(prevState => ({
+        endFullLog: {
+          ...prevState.endFullLog,
+          [checker]: event.timeStamp,
+        },
+        speedFullLog: {
+          ...prevState.speedFullLog,
+          [checker]: this.oneCharSpeed,
+        },
+      }));
+
       this.count += 1;
     }
-
-    // if (this.textToWrite[this.count] === endFullLog[event.data]) {
-    // }
 
     this.log.innerHTML += `${event.type}: ${event.data} timestamp: ${event.timeStamp}`;
     this.log.innerHTML += '<br>';
@@ -69,6 +85,7 @@ export default class InputText extends React.Component {
   }
 
   render() {
+    const { startFullLog, endFullLog, speedFullLog } = this.state;
     return (
       <div>
         <div className="control">
@@ -85,6 +102,12 @@ export default class InputText extends React.Component {
           <button className="clear-log" onClick={this.clearLog}>
             Clear
           </button>
+        </div>
+
+        <div>
+          <p>{startFullLog.test}</p>
+          <p>{endFullLog.test}</p>
+          <p>{speedFullLog.test}</p>
         </div>
       </div>
     );

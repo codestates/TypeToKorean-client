@@ -4,42 +4,55 @@ import { Input, Card } from 'antd';
 export default class InputText extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      startFullLog: {},
+      endFullLog: {},
+    };
 
     this.handleEvent = this.handleEvent.bind(this);
     this.clearLog = this.clearLog.bind(this);
   }
 
   handleEvent(event) {
-    this.startLog = {};
-    this.endLog = {};
+    const { startFullLog, endFullLog } = this.state;
+
+    // this.startLog = {};
+    // this.endLog = {};
     this.count = 0;
     this.oneCharSpeed = 0;
     this.log = document.querySelector('.event-log-contents');
-    this.textToWrite = document.querySelector('.textToWrite').innerText;
+    const textToWrite = document.querySelector('.textToWrite').innerText;
+    const checker = textToWrite[this.count];
+
     if (event.type === 'compositionstart') {
-      this.startLog[this.textToWrite[this.count]] = event.timeStamp; // 첫번째 작성하여야 할 글자와
-      console.log(this.startLog);
+      this.setState(prevState => ({
+        startFullLog: {
+          ...prevState.startFullLog,
+          [checker]: event.timeStamp,
+        },
+      }));
+      // startFullLog[this.textToWrite[this.count]] = event.timeStamp; // 첫번째 작성하여야 할 글자와
+      console.log(startFullLog);
     }
     if (event.type === 'compositionend') {
-      this.endLog[event.data] = event.timeStamp; // 작성 완료된 글자를 비교
-      console.log(this.endLog);
+      endFullLog[event.data] = event.timeStamp; // 작성 완료된 글자를 비교
+      console.log(endFullLog);
       this.oneCharSpeed =
-        this.startLog[this.textToWrite[this.count]] -
-        this.endLog[this.textToWrite[this.count]];
+        startFullLog[this.textToWrite[this.count]] -
+        endFullLog[this.textToWrite[this.count]];
       console.log(
         `textToWrite[${this.count}] : ${this.textToWrite[this.count]} speed : ${
           this.oneCharSpeed
         }`, // 한 자의 속도가 어떤지 확인
       );
       console.log(
-        `${JSON.stringify(this.startLog)}, ${JSON.stringify(this.endLog)}`, // 두 글자의 속도 비교
+        `${JSON.stringify(startFullLog)}, ${JSON.stringify(endFullLog)}`, // 두 글자의 속도 비교
       );
       this.count += 1;
     }
 
-    if (this.textToWrite[this.count] === this.endLog[event.data]) {
-    }
+    // if (this.textToWrite[this.count] === endFullLog[event.data]) {
+    // }
 
     this.log.innerHTML += `${event.type}: ${event.data} timestamp: ${event.timeStamp}`;
     this.log.innerHTML += '<br>';

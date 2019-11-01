@@ -23,6 +23,7 @@ export default class InputText extends React.Component {
     const { startFullLog, endFullLog, speedFullLog, count, CPM } = this.state;
 
     this.log = document.querySelector('.event-log-contents');
+
     const textToWrite = document.querySelector('.textToWrite').innerText;
     const inputType = document.querySelector('.inputType').value;
 

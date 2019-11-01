@@ -33,7 +33,7 @@ export default class InputText extends React.Component {
       // startFullLog[event.data] = event.timeStamp; // if obj
 
       const prevStartFullLog = startFullLog;
-      prevStartFullLog.push({ [event.data]: event.timeStamp });
+      prevStartFullLog.push({ [event.type]: event.timeStamp });
       this.setState(prevState => ({
         // if state
         startFullLog: prevStartFullLog,
@@ -53,17 +53,15 @@ export default class InputText extends React.Component {
         endFullLog: prevEndFullLog,
       }));
 
-      this.oneCharSpeed =
-        startFullLog[this.textToWrite[this.count]] -
-        endFullLog[this.textToWrite[this.count]];
+      // this.oneCharSpeed = ${startFullLog[this.textToWrite[this.count]] - endFullLog[this.textToWrite[this.count]]}
+
+      // console.log(
+      //   `textToWrite[${this.count}] : ${this.textToWrite[this.count]} speed : `, // 한 자의 속도가 어떤지 확인
+      // );
       console.log(
-        `textToWrite[${this.count}] : ${this.textToWrite[this.count]} speed : ${
-          this.oneCharSpeed
-        }`, // 한 자의 속도가 어떤지 확인
+        `${JSON.stringify(startFullLog)}, `, // 두 글자의 속도 비교
       );
-      console.log(
-        `${JSON.stringify(startFullLog)}, ${JSON.stringify(endFullLog)}`, // 두 글자의 속도 비교
-      );
+      // console.log(JSON.stringify(endFullLog))
       // this.setState(prevState => ({
       //   endFullLog: {
       //     ...prevState.endFullLog,
@@ -93,10 +91,22 @@ export default class InputText extends React.Component {
   }
 
   renderLog() {
-    // if (this.startFullLog.length === 0 ) return <span>there is no log!</span>
-    // if (this.endFullLog.length === 0 ) return <span>there is no log!</span>
-    // if (this.speedFullLog.length === 0 ) return <span>there is no log!</span>
-    // return <ul>{this.}</ul>
+    const { startFullLog, endFullLog, speedFullLog } = this.state;
+
+    if (startFullLog.length === 0) return <span>there is no log!</span>;
+    // if (endFullLog.length === 0) return <span>there is no log!</span>;
+    // if (speedFullLog.length === 0) return <span>there is no log!</span>;
+    return (
+      <ul>
+        {JSON.stringify(startFullLog)}
+        {/* {endFullLog.map(value => {
+          <li>{JSON.stringify(value)}</li>;
+        })}
+        {speedFullLog.map(value => {
+          <li>{JSON.stringify(value)}</li>;
+        })} */}
+      </ul>
+    );
   }
 
   render() {
@@ -124,6 +134,7 @@ export default class InputText extends React.Component {
             cols="25"
           />
         </div>
+        <div>{this.renderLog()}</div>
       </div>
     );
   }

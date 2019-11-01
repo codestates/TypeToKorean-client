@@ -11,10 +11,11 @@ export default class PracticeScreen extends Component {
   }
 
   render() {
+    const { textToWrite } = this.props;
     return (
       <Card>
-        <TextToWrite />
-        <InputText />
+        <TextToWrite textToWrite={textToWrite} />
+        <InputText textToWrite={textToWrite} />
       </Card>
     );
   }

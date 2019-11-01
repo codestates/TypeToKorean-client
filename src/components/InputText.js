@@ -5,44 +5,44 @@ export default class InputText extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      startFullLog: {
-        test: 'this is test data - start',
-      },
-      endFullLog: {
-        test: 'this is test data - end',
-      },
-      speedFullLog: {
-        test: 'this is test data - speed',
-      },
+      startFullLog: [],
+      endFullLog: [],
+      speedFullLog: []
     };
-
     this.handleEvent = this.handleEvent.bind(this);
     this.clearLog = this.clearLog.bind(this);
+    this.renderLog = this.renderLog.bing(this);
+
+    // this.startFullLog = [];
+    // this.endFullLog = [];
+    // this.speedFullLog = [];
+
+    this.count = 0;
+    this.oneCharSpeed = 0;
   }
 
   handleEvent(event) {
-    const { startFullLog, endFullLog } = this.state;
+    const { startFullLog, endFullLog, speedFullLog } = this.state;
 
-    // this.startLog = {};
-    // this.endLog = {};
-    this.count = 0;
-    this.oneCharSpeed = 0;
     this.log = document.querySelector('.event-log-contents');
     const textToWrite = document.querySelector('.textToWrite').innerText;
     const checker = textToWrite[this.count];
 
     if (event.type === 'compositionstart') {
-      this.setState(prevState => ({
-        startFullLog: {
-          ...prevState.startFullLog,
-          [checker]: event.timeStamp,
-        },
+      // startFullLog.push({[event.data] : event.timeStamp}) // if arr
+      // startFullLog[event.data] = event.timeStamp; // if obj
+      
+      const prevStartFullLog = startFullLog
+      prevStartFullLog.push({[event.data] : event.timeStamp})
+      this.setState(prevState => ({  // if state
+        startFullLog: prevStartFullLog
       }));
       // startFullLog[this.textToWrite[this.count]] = event.timeStamp; // 첫번째 작성하여야 할 글자와
       console.log(startFullLog);
     }
     if (event.type === 'compositionend') {
-      endFullLog[event.data] = event.timeStamp; // 작성 완료된 글자를 비교
+      endFullLog.push({[event.data] : event.timeStamp})
+      // endFullLog[event.data] = event.timeStamp; // if obj // 작성 완료된 글자를 비교
       console.log(endFullLog);
 
       this.oneCharSpeed =
@@ -56,16 +56,16 @@ export default class InputText extends React.Component {
       console.log(
         `${JSON.stringify(startFullLog)}, ${JSON.stringify(endFullLog)}`, // 두 글자의 속도 비교
       );
-      this.setState(prevState => ({
-        endFullLog: {
-          ...prevState.endFullLog,
-          [checker]: event.timeStamp,
-        },
-        speedFullLog: {
-          ...prevState.speedFullLog,
-          [checker]: this.oneCharSpeed,
-        },
-      }));
+      // this.setState(prevState => ({
+      //   endFullLog: {
+      //     ...prevState.endFullLog,
+      //     [checker]: event.timeStamp,
+      //   },
+      //   speedFullLog: {
+      //     ...prevState.speedFullLog,
+      //     [checker]: this.oneCharSpeed,
+      //   },
+      // }));
 
       this.count += 1;
     }
@@ -83,6 +83,16 @@ export default class InputText extends React.Component {
     this.log = document.querySelector('.event-log-contents');
     this.log.innerHTML = '';
   }
+
+  renderLog(){
+    if (this.startFullLog.length === 0 ) return <span>there is no log!</span>
+    if (this.endFullLog.length === 0 ) return <span>there is no log!</span>
+    if (this.speedFullLog.length === 0 ) return <span>there is no log!</span>
+
+
+    return <ul>{this.}</ul>
+
+  }  
 
   render() {
     const { startFullLog, endFullLog, speedFullLog } = this.state;
@@ -105,9 +115,7 @@ export default class InputText extends React.Component {
         </div>
 
         <div>
-          <p>{startFullLog.test}</p>
-          <p>{endFullLog.test}</p>
-          <p>{speedFullLog.test}</p>
+
         </div>
       </div>
     );

@@ -7,11 +7,11 @@ export default class InputText extends React.Component {
     this.state = {
       startFullLog: [],
       endFullLog: [],
-      speedFullLog: []
+      speedFullLog: [],
     };
     this.handleEvent = this.handleEvent.bind(this);
     this.clearLog = this.clearLog.bind(this);
-    this.renderLog = this.renderLog.bing(this);
+    this.renderLog = this.renderLog.bind(this);
 
     // this.startFullLog = [];
     // this.endFullLog = [];
@@ -31,19 +31,27 @@ export default class InputText extends React.Component {
     if (event.type === 'compositionstart') {
       // startFullLog.push({[event.data] : event.timeStamp}) // if arr
       // startFullLog[event.data] = event.timeStamp; // if obj
-      
-      const prevStartFullLog = startFullLog
-      prevStartFullLog.push({[event.data] : event.timeStamp})
-      this.setState(prevState => ({  // if state
-        startFullLog: prevStartFullLog
+
+      const prevStartFullLog = startFullLog;
+      prevStartFullLog.push({ [event.data]: event.timeStamp });
+      this.setState(prevState => ({
+        // if state
+        startFullLog: prevStartFullLog,
       }));
       // startFullLog[this.textToWrite[this.count]] = event.timeStamp; // 첫번째 작성하여야 할 글자와
       console.log(startFullLog);
     }
     if (event.type === 'compositionend') {
-      endFullLog.push({[event.data] : event.timeStamp})
+      // endFullLog.push({[event.data] : event.timeStamp}) // if arr
       // endFullLog[event.data] = event.timeStamp; // if obj // 작성 완료된 글자를 비교
       console.log(endFullLog);
+
+      const prevEndFullLog = endFullLog;
+      prevEndFullLog.push({ [event.data]: event.timeStamp });
+      this.setState(prevState => ({
+        // if state
+        endFullLog: prevEndFullLog,
+      }));
 
       this.oneCharSpeed =
         startFullLog[this.textToWrite[this.count]] -
@@ -84,15 +92,12 @@ export default class InputText extends React.Component {
     this.log.innerHTML = '';
   }
 
-  renderLog(){
-    if (this.startFullLog.length === 0 ) return <span>there is no log!</span>
-    if (this.endFullLog.length === 0 ) return <span>there is no log!</span>
-    if (this.speedFullLog.length === 0 ) return <span>there is no log!</span>
-
-
-    return <ul>{this.}</ul>
-
-  }  
+  renderLog() {
+    // if (this.startFullLog.length === 0 ) return <span>there is no log!</span>
+    // if (this.endFullLog.length === 0 ) return <span>there is no log!</span>
+    // if (this.speedFullLog.length === 0 ) return <span>there is no log!</span>
+    // return <ul>{this.}</ul>
+  }
 
   render() {
     const { startFullLog, endFullLog, speedFullLog } = this.state;
@@ -112,19 +117,14 @@ export default class InputText extends React.Component {
           <button className="clear-log" onClick={this.clearLog}>
             Clear
           </button>
-        </div>
-
-        <div>
-
+          <textarea
+            readOnly
+            className="event-log-contents"
+            rows="8"
+            cols="25"
+          />
         </div>
       </div>
     );
   }
 }
-
-// <textarea
-// readOnly
-// className="event-log-contents"
-// rows="8"
-// cols="25"
-// />

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Card } from 'antd';
 
-import TextToWrite from '../components/TextToWrite';
-import InputText from '../components/InputText';
+import TextToWrite from './divs/TextToWrite';
+import InputText from './divs/InputText';
 
 export default class PracticeScreen extends Component {
   constructor(props) {

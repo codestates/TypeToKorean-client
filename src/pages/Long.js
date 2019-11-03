@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import OneSentencePractice from '../components/practice/ShortSentencePractice';
+import LongSentencePractice from '../components/practice/LongSentencePractice';
 import ReadMe from './ReadMe';
 
-export default class Main extends Component {
+export default class Long extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -12,7 +12,7 @@ export default class Main extends Component {
     return (
       <div>
         <p>
-          <OneSentencePractice />
+          <LongSentencePractice />
         </p>
         <p>
           <ReadMe />

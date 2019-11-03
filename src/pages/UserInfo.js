@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import BriefInfo from '../components/userInfo/BriefInfo';
+import Stat1 from '../components/userInfo/Stat1';
+import Stat2 from '../components/userInfo/Stat2';
 
-import Stat2 from '../components/Stat2';
-
-export default class Char extends Component {
+class UserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -49,11 +50,14 @@ export default class Char extends Component {
 
   render() {
     const { data } = this.state;
-
     return (
       <div>
-        <Stat2 data={data} title="Visits" color="#70CAD1" />
+        <BriefInfo />
+        <Stat1 />
+        <Stat2 Stat2 data={data} title="Visits" color="#70CAD1" />
       </div>
     );
   }
 }
+
+export default UserInfo;

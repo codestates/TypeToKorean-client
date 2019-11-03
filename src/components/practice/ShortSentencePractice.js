@@ -15,11 +15,11 @@ export default class ShortSentencePractice extends Component {
     };
 
     this.scoring = this.scoring.bind(this);
-    this.fetchingText = this.fetchingText.bind(this);
+    this.postingText = this.postingText.bind(this);
   }
 
   scoring(speed, typo) {
-    const score = (speed * 100) / (typo * 1.3);
+    const score = (speed * 100) / ((typo + 1) * 1.3);
     this.setState({
       speed,
       typo,
@@ -28,8 +28,8 @@ export default class ShortSentencePractice extends Component {
     // 점수를 받아서 계산하고, state로 전부 올린다.
   }
 
-  fetchingText() {
-    // get 요청을 통해 서버로 부터 테스트를 받아온다.
+  postingResult() {
+    // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
   }
 
   render() {
@@ -45,7 +45,7 @@ export default class ShortSentencePractice extends Component {
             <PracticeScreen
               textToWrite={textToWrite}
               scoring={this.scoring}
-              fetchingText={this.fetchingText}
+              postingResult={this.postingResult}
             />
           </p>
         </Card>

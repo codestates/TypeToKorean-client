@@ -11,16 +11,17 @@ export default class PracticeData extends Component {
   }
 
   render() {
+    const { speed, typo, score } = this.props;
     return (
       <Row>
         <Col span={3}>
-          <SpeedDiv />
+          <SpeedDiv speed={speed} />
         </Col>
         <Col span={3}>
-          <TypoDiv />
+          <TypoDiv typo={typo} />
         </Col>
         <Col span={3}>
-          <ScoreDiv />
+          <ScoreDiv score={score} />
         </Col>
       </Row>
     );

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
-import SpeedDiv from '../components/SpeedDiv';
-import TypoDiv from '../components/TypoDiv';
-import ScoreDiv from '../components/ScoreDiv';
+import SpeedDiv from './divs/SpeedDiv';
+import TypoDiv from './divs/TypoDiv';
+import ScoreDiv from './divs/ScoreDiv';
 
 export default class PracticeData extends Component {
   constructor(props) {

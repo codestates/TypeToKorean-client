@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
-import fakeData from './FakeData';
 
 class NormalLoginForm extends React.Component {
   handleSubmit = e => {
@@ -26,7 +25,7 @@ class NormalLoginForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <article class="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
+      <article className="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
         <Form onSubmit={this.handleSubmit} className="login-form">
           <Form.Item>
             {getFieldDecorator('email', {

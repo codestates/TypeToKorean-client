@@ -4,11 +4,12 @@ import { Card } from 'antd';
 import PracticeData from './PracticeData';
 import PracticeScreen from './PracticeScreen';
 
-export default class Practice extends Component {
+export default class CustomTextPractice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textToWrite: '소소하지만 확실한 행복.',
+      textToWrite:
+        '여기는 앞으로 커스텀 텍스트를 삽입하셔서 연습할 수 있습니다.',
     };
   }
 

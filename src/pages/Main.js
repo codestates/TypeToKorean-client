@@ -9,10 +9,16 @@ export default class Main extends Component {
   }
 
   render() {
+    const { loginId, loginUserName, loginComplete } = this.props;
+
     return (
       <div>
         <p>
-          <OneSentencePractice />
+          <OneSentencePractice
+            loginId={loginId}
+            loginUserName={loginUserName}
+            loginComplete={loginComplete}
+          />
         </p>
         <p>
           <ReadMe />

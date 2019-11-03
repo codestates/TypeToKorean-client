@@ -14,10 +14,35 @@ import WrappedRegistrationForm from './pages/WrappedRegistrationForm';
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      loginId: '',
+      loginUserName: '',
+      loginImage: '',
+      loginComplete: false,
+    };
+
+    this.handleLoginState = this.handleLoginState.bind(this);
+    this.handleLogoutState = this.handleLogoutState.bind(this);
+  }
+
+  handleLoginState(id, username, image) {
+    this.setState({
+      loginId: id,
+      loginUserName: username,
+      loginImage: image,
+      loginComplete: true,
+    });
+  }
+
+  handleLogoutState() {
+    this.setState({
+      loginComplete: false,
+    });
   }
 
   render() {
+    const { loginId, loginUserName, loginComplete, loginImage } = this.state;
+
     return (
       <div>
         <Router>
@@ -25,7 +50,11 @@ export default class App extends Component {
             <Col span={16}>
               <Switch>
                 <Route exact path="/">
-                  <Main />
+                  <Main
+                    loginId={loginId}
+                    loginUserName={loginUserName}
+                    loginComplete={loginComplete}
+                  />
                 </Route>
                 <Route path="/long">
                   <Long />
@@ -43,7 +72,14 @@ export default class App extends Component {
             </Col>
 
             <Col span={8}>
-              <Log />
+              <Log
+                loginId={loginId}
+                loginUserName={loginUserName}
+                loginComplete={loginComplete}
+                loginImage={loginImage}
+                handleLoginState={this.handleLoginState}
+                handleLogoutState={this.handleLogoutState}
+              />
               <Menu
                 onClick={this.handleClick}
                 style={{ width: 400 }}

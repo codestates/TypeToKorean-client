@@ -32,9 +32,10 @@ class NormalLoginForm extends React.Component {
           .then(json => {
             message.success('Now you are logged in!', 1.0);
             if (json.username) {
-              this.userData.username = json.username;
-              this.userData.image = json.image;
-              this.props.handleLoginState();
+              // this.userData.username = json.username;
+              // this.userData.image = json.image;
+
+              this.props.handleLoginState(json.id, json.username, json.image);
             }
             console.log(json);
           });

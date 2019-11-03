@@ -15,11 +15,12 @@ export default class ShortSentencePractice extends Component {
     };
 
     this.scoring = this.scoring.bind(this);
-    this.postingText = this.postingText.bind(this);
+    // this.postingResult = this.postingResult.bind(this);
   }
 
   scoring(speed, typo) {
     const score = (speed * 100) / ((typo + 1) * 1.3);
+    this.postingResult(score, speed, typo);
     this.setState({
       speed,
       typo,
@@ -28,7 +29,31 @@ export default class ShortSentencePractice extends Component {
     // 점수를 받아서 계산하고, state로 전부 올린다.
   }
 
-  postingResult() {
+  postingResult(score, speed, typo) {
+    const { loginId, loginUserName, loginComplete } = this.props;
+
+    const result = {
+      id: loginId,
+      userName: loginUserName,
+      typeSpeed: speed,
+      score: score,
+      typo: typo,
+      totaltime: '',
+    };
+    if (loginComplete) {
+      window
+        .fetch('http://localhost:5000/typeInformation/id', {
+          method: 'POST',
+          body: JSON.stringify(result),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(res => res.json())
+        .then(json => console.log(json))
+        .catch(err => console.log(err));
+    }
+
     // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
   }
 

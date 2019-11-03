@@ -4,10 +4,13 @@ import { Button, Avatar, Typography } from 'antd';
 const { Title } = Typography;
 
 class LoginRender extends React.Component {
-  state = {
-    loading: false,
-    iconLoading: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false,
+      iconLoading: false,
+    };
+  }
 
   enterLoading = () => {
     this.setState({ loading: true });
@@ -17,15 +20,35 @@ class LoginRender extends React.Component {
     this.setState({ iconLoading: true });
   };
 
+  logoutButton = () => {
+    fetch('http://localhost:5000/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then(response => {
+      this.props.handleLogoutState();
+      return response.json();
+    });
+  };
+
   render() {
     return (
       <div>
         <article class="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
           <div>
-            <Avatar shape="square" size={64} icon="user" />
+            {this.props.image ? (
+              <Avatar shape="square" size={64} icon={this.props.image} />
+            ) : (
+              <Avatar shape="square" size={64} icon="user" />
+            )}
           </div>
           <div>
-            <Title level={4}>Username</Title>
+            {this.props.username ? (
+              <Title level={4}>Username: {this.props.username}</Title>
+            ) : (
+              <Title level={4}>Username: {this.props.username}</Title>
+            )}
           </div>
           <div>
             <Button
@@ -39,7 +62,12 @@ class LoginRender extends React.Component {
               type="primary"
               icon="poweroff"
               loading={this.state.iconLoading}
-              onClick={this.enterIconLoading}
+              onClick={
+                (this.enterIconLoading,
+                () => {
+                  this.logoutButton();
+                })
+              }
             >
               Logout
             </Button>

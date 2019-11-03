@@ -7,7 +7,8 @@ import Main from './pages/Main';
 import Long from './pages/Long';
 import Custom from './pages/Custom';
 import UserInfo from './pages/UserInfo';
-import Login from './components/login/Login';
+import Log from './components/login/Log';
+import WrappedRegistrationForm from './pages/WrappedRegistrationForm';
 // import Menu from './components/Menu';
 
 export default class App extends Component {
@@ -35,11 +36,14 @@ export default class App extends Component {
                 <Route path="/info">
                   <UserInfo />
                 </Route>
+                <Route path="/signin">
+                  <WrappedRegistrationForm />
+                </Route>
               </Switch>
             </Col>
 
             <Col span={8}>
-              <Login />
+              <Log />
               <Menu
                 onClick={this.handleClick}
                 style={{ width: 400 }}
@@ -60,6 +64,9 @@ export default class App extends Component {
                 </Menu.Item>
                 <Menu.Item key="4">
                   <Link to="/info">회원정보</Link>
+                </Menu.Item>
+                <Menu.Item key="5">
+                  <Link to="/signin">회원가입</Link>
                 </Menu.Item>
               </Menu>
             </Col>

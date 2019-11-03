@@ -1,23 +1,43 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
+import LoginRender from './LoginRender';
+import Log from './Log';
 
 class NormalLoginForm extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.userData = {
+      username: null,
+      image: null,
+    };
+  }
+
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      fetch('http://localhost:5000/login', {
-        method: 'POST',
-        body: JSON.stringify(values),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
       if (!err) {
-        message.loading('you are Loggin in...', 2.5).then(() => {
-          message.success('Now you are logged in!', 1.0);
-          console.log('Received values of form: ', values);
-        });
+        fetch('http://localhost:5000/login', {
+          method: 'POST',
+          body: JSON.stringify(values),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+          .then(response => {
+            console.log(values);
+            return response.json();
+          })
+          .then(json => {
+            message.success('Now you are logged in!', 1.0);
+            if (json.username) {
+              this.userData.username = json.username;
+              this.userData.image = json.image;
+              this.props.handleLoginState();
+            }
+            console.log(json);
+          });
       }
     });
   };

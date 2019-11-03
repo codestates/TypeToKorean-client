@@ -12,45 +12,11 @@ import {
   Checkbox,
   Button,
   AutoComplete,
+  message,
 } from 'antd';
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
-
-const residences = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-];
 
 class RegistrationForm extends React.Component {
   state = {
@@ -69,8 +35,18 @@ class RegistrationForm extends React.Component {
           headers: {
             'Content-Type': 'application/json',
           },
-        });
-        console.log('Received values of form: ', values);
+        })
+          .then(response => {
+            return response.json();
+          })
+          .then(json => {
+            if (!json) {
+              message.error('fail!', 3);
+            } else {
+              message.success('success!', 3);
+              console.log(json);
+            }
+          });
       }
     });
   };

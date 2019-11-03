@@ -9,37 +9,36 @@ export default class InputText extends React.Component {
       endFullLog: [],
       speedFullLog: [],
       count: 0,
-      CPM: 0,
-      typoCount: 0,
+      speed: 0,
+      typo: 0,
     };
     this.handleEvent = this.handleEvent.bind(this);
     this.clearLog = this.clearLog.bind(this);
     this.renderLog = this.renderLog.bind(this);
-    this.checkSpeed = this.checkSpeed.bind(this);
+    this.callNextText = this.callNextText.bind(this);
     // this.checkTypo = this.checkTypo.bind(this);
   }
 
   handleEvent(event) {
-    const { startFullLog, endFullLog, speedFullLog, count, CPM } = this.state;
+    const { startFullLog, endFullLog, speedFullLog, count, speed } = this.state;
+    const { textToWrite } = this.props;
 
     this.log = document.querySelector('.event-log-contents');
 
-    const textToWrite = document.querySelector('.textToWrite').innerText;
+    // const textToWrite = document.querySelector('.textToWrite').innerText;
     const inputType = document.querySelector('.inputType').value;
-
     const checker = textToWrite[count];
 
     if (event.type === 'compositionstart') {
+      // 시작 시 timestamp
       const prevStartFullLog = startFullLog;
       prevStartFullLog.push({ [count]: event.timeStamp });
       this.setState(prevState => ({
         startFullLog: prevStartFullLog,
       }));
-      // console.log(startFullLog);
     }
     if (event.type === 'compositionend') {
-      // console.log(endFullLog);
-
+      // 끝날 시 timestamp
       const prevEndFullLog = endFullLog;
       prevEndFullLog.push({ [event.data]: event.timeStamp });
       console.log('start', startFullLog[count][count]);
@@ -52,47 +51,64 @@ export default class InputText extends React.Component {
         count: count + 1,
       }));
 
-      const speed =
-        textToWrite.length * (60000 / speedFullLog.reduce((a, b) => a + b));
+      const CPM =
+        textToWrite.length * (60000 / speedFullLog.reduce((a, b) => a + b)); // 속도 계산
+
+      this.setState({
+        speed: CPM,
+      });
+      console.log('avg speed', speed);
+      console.log('sum speed', speedFullLog.reduce((a, b) => a + b));
 
       if (textToWrite.length === inputType.length) {
-        this.setState({
-          CPM: speed,
-        });
-        console.log('avg speed', speed);
-        console.log('sum speed', speedFullLog.reduce((a, b) => a + b));
         // 여기서 오타 잡는 함수 실행
+        const checkTypo = (text, input) => {
+          let typo = 0;
+          for (let i = 0; i < input.length; i += 1) {
+            if (text[i] !== input[i]) {
+              typo += 1;
+            }
+          }
+          return typo;
+        };
+        const typo = checkTypo(textToWrite, inputType);
+        this.setState(prevState => ({
+          typo,
+        }));
+
+        // const checkScore = scoring(speed, typo);
+
+        console.log('TypoCount', typo);
       }
       console.log('textToWrite', textToWrite.length);
       console.log('inputType', inputType.length);
 
       this.log.innerHTML += `oneCharSpeed : ${speedFullLog[count]}<br>`;
     }
-    // this.log.innerHTML += `${event.type}: ${event.data} timestamp: ${event.timeStamp}`;
-    // this.log.innerHTML += '<br>';
   }
-
-  // checkTypo() {
-  //   const textToWrite = document.querySelector('.textToWrite').innerText;
-  //   const inputType = document.querySelector('.inputType').value;
-  //   const textToWriteArray = textToWrite.split('');
-  //   const inputTypeArray = inputType.split('');
-
-  //   for (let i = 0; i < textToWriteArray.length; i += 1) {
-  //     let count = 0;
-  //     if (textToWriteArray[i] !== inputTypeArray[i]) {
-  //       count += 1;
-  //     }
-  //   }
-
-  //   this.setState({
-  //     typoCount: count,
-  //   });
-  // }
 
   clearLog() {
     this.log = document.querySelector('.event-log-contents');
     this.log.innerHTML = '';
+  }
+
+  callNextText(event) {
+    const { typo, speed } = this.state;
+    const { scoring, postingResult } = this.props;
+
+    if (event.type === 'keydown') {
+      if (event.keyCode === 13) {
+        const checkScore = scoring(speed, typo);
+        this.setState({
+          startFullLog: [],
+          endFullLog: [],
+          speedFullLog: [],
+          count: 0,
+          speed: 0,
+          typo: 0,
+        });
+      }
+    }
   }
 
   renderLog() {
@@ -110,11 +126,6 @@ export default class InputText extends React.Component {
     );
   }
 
-  checkSpeed() {
-    const { CPM } = this.state;
-    console.log(CPM);
-  }
-
   render() {
     // const { startFullLog, endFullLog, speedFullLog } = this.state;
     return (
@@ -125,6 +136,7 @@ export default class InputText extends React.Component {
             onCompositionStart={this.handleEvent}
             onCompositionUpdate={this.handleEvent}
             onCompositionEnd={this.handleEvent}
+            onKeyDown={this.callNextText}
           />
         </div>
 
@@ -139,7 +151,6 @@ export default class InputText extends React.Component {
             rows="8"
             cols="25"
           />
-          <button onClick={this.checkSpeed}>check speed</button>
         </div>
         <div>{this.renderLog()}</div>
       </div>

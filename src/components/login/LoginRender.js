@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Avatar, Typography } from 'antd';
+import { Link } from 'react-router-dom';
 
 const { Title } = Typography;
 
@@ -51,26 +52,30 @@ class LoginRender extends React.Component {
             )}
           </div>
           <div>
-            <Button
-              type="primary"
-              loading={this.state.loading}
-              onClick={this.enterLoading}
-            >
-              Userinfo
-            </Button>
-            <Button
-              type="primary"
-              icon="poweroff"
-              loading={this.state.iconLoading}
-              onClick={
-                (this.enterIconLoading,
-                () => {
-                  this.logoutButton();
-                })
-              }
-            >
-              Logout
-            </Button>
+            <Link to="/info">
+              <Button
+                type="primary"
+                loading={this.state.loading}
+                onClick={this.enterLoading}
+              >
+                Userinfo
+              </Button>
+            </Link>
+            <Link to="/">
+              <Button
+                type="primary"
+                icon="poweroff"
+                loading={this.state.iconLoading}
+                onClick={
+                  (this.enterIconLoading,
+                  () => {
+                    this.logoutButton();
+                  })
+                }
+              >
+                Logout
+              </Button>
+            </Link>
           </div>
         </article>
       </div>

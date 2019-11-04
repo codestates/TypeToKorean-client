@@ -9,6 +9,7 @@ import Custom from './pages/Custom';
 import UserInfo from './pages/UserInfo';
 import Log from './components/login/Log';
 import WrappedRegistrationForm from './pages/WrappedRegistrationForm';
+import WrappedSignoutForm from './pages/WrappedSignoutForm';
 // import Menu from './components/Menu';
 
 export default class App extends Component {
@@ -68,6 +69,9 @@ export default class App extends Component {
                 <Route path="/signin">
                   <WrappedRegistrationForm />
                 </Route>
+                <Route path="/signout">
+                  <WrappedSignoutForm />
+                </Route>
               </Switch>
             </Col>
 
@@ -98,12 +102,16 @@ export default class App extends Component {
                 <Menu.Item key="3">
                   <Link to="/custom">커스텀 글 연습</Link>
                 </Menu.Item>
-                <Menu.Item key="4">
-                  <Link to="/info">회원정보</Link>
-                </Menu.Item>
-                <Menu.Item key="5">
-                  <Link to="/signin">회원가입</Link>
-                </Menu.Item>
+
+                {this.state.loginComplete ? (
+                  <Menu.Item key="4">
+                    <Link to="/info">회원정보</Link>
+                  </Menu.Item>
+                ) : (
+                  <Menu.Item key="5">
+                    <Link to="/signin">회원가입</Link>
+                  </Menu.Item>
+                )}
               </Menu>
             </Col>
           </Row>

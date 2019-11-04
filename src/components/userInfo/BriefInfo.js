@@ -1,6 +1,7 @@
-import React from "react";
-import { Button, Avatar, Typography, Col, Row } from "antd";
-import PicDiv from "./PicDiv";
+import React from 'react';
+import { Button, Avatar, Typography, Col, Row } from 'antd';
+import PicDiv from './PicDiv';
+import { Link } from 'react-router-dom';
 
 const { Title } = Typography;
 
@@ -33,7 +34,9 @@ class BriefInfo extends React.Component {
               <Button type="primary">Edit</Button>
             </Col>
             <Col span={2}>
-              <Button type="primary">Logout</Button>
+              <Link to="/signout">
+                <Button type="primary">Signout</Button>
+              </Link>
             </Col>
           </Row>
         </article>

@@ -8,7 +8,8 @@ export default class ShortSentencePractice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textToWrite: '소소하지만 확실한 행복.',
+      textToWrite: '소소하지만 확실한 행복.'.normalize('NFD'),
+      textToWriteNotNormalized: '소소하지만 확실한 행복.',
       speed: 0,
       typo: 0,
       score: 0,
@@ -36,8 +37,8 @@ export default class ShortSentencePractice extends Component {
       id: loginId,
       userName: loginUserName,
       typeSpeed: speed,
-      score: score,
-      typo: typo,
+      score,
+      typo,
       totaltime: '',
     };
     if (loginComplete) {
@@ -58,7 +59,13 @@ export default class ShortSentencePractice extends Component {
   }
 
   render() {
-    const { textToWrite, score, speed, typo } = this.state;
+    const {
+      textToWrite,
+      textToWriteNotNormalized,
+      score,
+      speed,
+      typo,
+    } = this.state;
 
     return (
       <div>
@@ -71,6 +78,7 @@ export default class ShortSentencePractice extends Component {
               textToWrite={textToWrite}
               scoring={this.scoring}
               postingResult={this.postingResult}
+              textToWriteNotNormalized={textToWriteNotNormalized}
             />
           </p>
         </Card>

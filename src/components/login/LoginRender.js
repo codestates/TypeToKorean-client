@@ -35,19 +35,19 @@ class LoginRender extends React.Component {
   render() {
     return (
       <div>
-        <article class="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
+        <article className="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
           <div>
-            {this.props.image ? (
-              <Avatar shape="square" size={64} icon={this.props.image} />
+            {this.props.loginImage ? (
+              <Avatar shape="square" size={64} icon={this.props.loginImage} />
             ) : (
-              <Avatar shape="square" size={64} icon="user" />
+              <Avatar shape="square" size={64} icon="close" />
             )}
           </div>
           <div>
-            {this.props.username ? (
-              <Title level={4}>Username: {this.props.username}</Title>
+            {this.props.loginUserName ? (
+              <Title level={4}>Username: {this.props.loginUserName}</Title>
             ) : (
-              <Title level={4}>Username: {this.props.username}</Title>
+              <Title level={4}>Username: something wrong!</Title>
             )}
           </div>
           <div>

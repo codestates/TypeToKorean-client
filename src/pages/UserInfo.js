@@ -8,10 +8,12 @@ class UserInfo extends Component {
     super(props);
     this.state = {
       data: this.getData(),
+      userInfo: '',
     };
 
     this.getData = this.getData.bind(this);
     this.getRandomDateArray = this.getRandomDateArray.bind(this);
+    this.getUserInfo = this.getUserInfo.bind(this);
   }
 
   componentDidMount() {
@@ -46,6 +48,16 @@ class UserInfo extends Component {
       });
     }
     return this.data;
+  }
+
+  getUserInfo() {
+    fetch('http://localhost:5000/users/id')
+      .then(res => res.json())
+      .then(json => {
+        this.setState({
+          userInfo: json,
+        });
+      });
   }
 
   render() {

@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Link } from 'react-router-dom';
 import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
 import LoginRender from './LoginRender';
 import Log from './Log';
@@ -83,7 +84,6 @@ class NormalLoginForm extends React.Component {
             >
               Log in
             </Button>
-            Or <a href="">register now!</a>
           </Form.Item>
         </Form>
       </article>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
 import {
   Form,
   Input,
@@ -13,14 +13,14 @@ import {
   Button,
   AutoComplete,
   message,
-  Modal,
+  Typography,
 } from 'antd';
 
-const { confirm } = Modal;
 const { Option } = Select;
+const { Title } = Typography;
 const AutoCompleteOption = AutoComplete.Option;
 
-class RegistrationForm extends React.Component {
+class SignoutForm extends React.Component {
   state = {
     confirmDirty: false,
     autoCompleteResult: [],
@@ -30,7 +30,8 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        fetch('http://localhost:5000/users', {
+        values.created_at = String(new Date());
+        fetch('http://localhost:5000/signout', {
           method: 'POST',
           body: JSON.stringify(values),
           headers: {
@@ -119,6 +120,9 @@ class RegistrationForm extends React.Component {
 
     return (
       <article className="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
+        <Title level={3}>
+          E-mail과 비밀번호를 입력하면 회원탈퇴가 완료됩니다.
+        </Title>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
           <Form.Item label="E-mail">
             {getFieldDecorator('email', {
@@ -147,27 +151,9 @@ class RegistrationForm extends React.Component {
               ],
             })(<Input.Password />)}
           </Form.Item>
-          <Form.Item label="Nickname">
-            {getFieldDecorator('username', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please input your username!',
-                  whitespace: true,
-                },
-              ],
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label="Phone Number">
-            {getFieldDecorator('phone', {
-              rules: [
-                { required: true, message: 'Please input your phone number!' },
-              ],
-            })(<Input style={{ width: '100%' }} />)}
-          </Form.Item>
           <Form.Item {...tailFormItemLayout}>
             <Button type="primary" htmlType="submit">
-              Register
+              Signout
             </Button>
           </Form.Item>
         </Form>
@@ -176,8 +162,6 @@ class RegistrationForm extends React.Component {
   }
 }
 
-const WrappedRegistrationForm = Form.create({ name: 'register' })(
-  RegistrationForm,
-);
+const WrappedSignoutForm = Form.create({ name: 'register' })(SignoutForm);
 
-export default WrappedRegistrationForm;
+export default WrappedSignoutForm;

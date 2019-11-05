@@ -1,5 +1,4 @@
 import React from 'react';
-import { Input, Card } from 'antd';
 
 export default class InputText extends React.Component {
   constructor(props) {
@@ -10,16 +9,27 @@ export default class InputText extends React.Component {
       count: 0,
       speed: 0,
       typo: 0,
+      inputValue: '',
     };
     this.handleEvent = this.handleEvent.bind(this);
     this.clearLog = this.clearLog.bind(this);
     this.callNextText = this.callNextText.bind(this);
+    this.handleSpace = this.handleSpace.bind(this);
     // this.clearInput = this.clearInput.bind(this);
   }
 
   async handleEvent(event) {
-    const { speedCheckArray, inputLength, count, speed, typo } = this.state;
+    const {
+      speedCheckArray,
+      inputLength,
+      count,
+      speed,
+      typo,
+      inputValue,
+    } = this.state;
     const { textToWrite, textToWriteNotNormalized, scoring } = this.props;
+
+    this.setState({ inputValue: event.target.value });
 
     this.log = document.querySelector('.event-log-contents');
 
@@ -46,10 +56,10 @@ export default class InputText extends React.Component {
     }
 
     if (textToWriteNotNormalized.length === inputTypeNotNormalized.length) {
-      const KPM =
-        textToWrite.length *
-        (60000 /
-          (speedCheckArray[speedCheckArray.length - 1] - speedCheckArray[0])); // 속도 계산
+      const totalTime =
+        speedCheckArray[speedCheckArray.length - 1] - speedCheckArray[0];
+
+      const KPM = textToWrite.length * (60000 / totalTime); // 속도 계산
 
       // 여기서 오타 잡는 함수 실행
       const checkTypo = (text, input) => {
@@ -66,7 +76,7 @@ export default class InputText extends React.Component {
         inputTypeNotNormalized,
       );
 
-      scoring(KPM, newTypo);
+      scoring(KPM, newTypo, totalTime);
 
       this.setState(prevState => ({
         typo: newTypo,
@@ -78,27 +88,48 @@ export default class InputText extends React.Component {
       console.log('speed', speedCheckArray);
     }
 
-    if (
-      textToWriteNotNormalized.length === inputTypeNotNormalized.length ||
-      textToWriteNotNormalized.length + 1 === inputTypeNotNormalized.length
-    ) {
-      if (event.type === 'keydown') {
-        if (event.keyCode === 13 || event.keyCode === 32) {
-          console.log('enter, space working');
-          await this.setState({
-            speedCheckArray: [],
-            count: 0,
-            speed: 0,
-            typo: 0,
-          });
-          document.querySelector('.inputType').value = '';
-        }
-      }
-    }
+    // if (textToWriteNotNormalized.length + 1 === inputTypeNotNormalized.length) {
+    //   if (event.type === 'keydown') {
+    //     if (event.keyCode === 13 || event.keyCode === 32) {
+    //       console.log('enter, space working');
+    //       await this.setState({
+    //         speedCheckArray: [],
+    //         count: 0,
+    //         speed: 0,
+    //         typo: 0,
+    //         inputValue: '',
+    //       });
+    //       // event.persist();
+    //       document.querySelector('.inputType').value = '';
+    //       // event.target.value = '';
+    //     }
+    //   }
+    // }
 
     // if (textToWriteNotNormalized.length === inputTypeNotNormalized.length) {
 
     // }
+  }
+
+  async handleSpace(event) {
+    const { textToWriteNotNormalized } = this.props;
+    const inputTypeNotNormalized = document.querySelector('.inputType').value;
+
+    if (textToWriteNotNormalized.length + 1 === inputTypeNotNormalized.length) {
+      if (event.keyCode === 13 || event.keyCode === 32) {
+        console.log('enter, space working');
+        await this.setState({
+          speedCheckArray: [],
+          count: 0,
+          speed: 0,
+          typo: 0,
+          inputValue: '',
+        });
+        // event.persist();
+        document.querySelector('.inputType').value = '';
+        // event.target.value = '';
+      }
+    }
   }
 
   // clearInput(event) {
@@ -137,11 +168,14 @@ export default class InputText extends React.Component {
   }
 
   render() {
-    // const { startFullLog, endFullLog, speedFullLog } = this.state;
     return (
       <div>
         <div className="control">
-          <Input className="inputType" onKeyDown={this.handleEvent} />
+          <input
+            className="inputType"
+            onKeyDown={this.handleEvent}
+            onKeyUp={this.handleSpace}
+          />
         </div>
 
         <div className="event-log">

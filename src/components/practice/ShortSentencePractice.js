@@ -8,20 +8,23 @@ export default class ShortSentencePractice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textToWrite: '소소하지만 확실한 행복.',
+      textToWrite: '소소하지만 확실한 행복.'.normalize('NFD'),
+      textToWriteNotNormalized: '소소하지만 확실한 행복.',
+      totaltime: 0,
       speed: 0,
       typo: 0,
       score: 0,
     };
 
     this.scoring = this.scoring.bind(this);
-    // this.postingResult = this.postingResult.bind(this);
+    this.postingResult = this.postingResult.bind(this);
   }
 
-  scoring(speed, typo) {
+  scoring(speed, typo, totaltime) {
     const score = (speed * 100) / ((typo + 1) * 1.3);
-    this.postingResult(score, speed, typo);
+    this.postingResult(speed, typo, totaltime, score);
     this.setState({
+      totaltime,
       speed,
       typo,
       score,
@@ -29,17 +32,17 @@ export default class ShortSentencePractice extends Component {
     // 점수를 받아서 계산하고, state로 전부 올린다.
   }
 
-  postingResult(score, speed, typo) {
+  postingResult(speed, typo, totaltime, score) {
+    // 서버로 보내는 부분이 camelCase가 안되있다.
     const { loginId, loginUserName, loginComplete } = this.props;
 
     const result = {
-      id: loginId,
-      userName: loginUserName,
       typeSpeed: speed,
-      score: score,
-      typo: typo,
-      totaltime: '',
+      score,
+      typo,
+      totaltime,
     };
+
     if (loginComplete) {
       window
         .fetch('http://localhost:5000/typeInformation/id', {
@@ -50,15 +53,19 @@ export default class ShortSentencePractice extends Component {
           },
         })
         .then(res => res.json())
-        .then(json => console.log(json))
         .catch(err => console.log(err));
     }
-
     // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
   }
 
   render() {
-    const { textToWrite, score, speed, typo } = this.state;
+    const {
+      textToWrite,
+      textToWriteNotNormalized,
+      score,
+      speed,
+      typo,
+    } = this.state;
 
     return (
       <div>
@@ -76,6 +83,7 @@ export default class ShortSentencePractice extends Component {
               textToWrite={textToWrite}
               scoring={this.scoring}
               postingResult={this.postingResult}
+              textToWriteNotNormalized={textToWriteNotNormalized}
             />
           </p>
         </Card>

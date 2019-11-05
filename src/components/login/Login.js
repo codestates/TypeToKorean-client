@@ -31,11 +31,8 @@ class NormalLoginForm extends React.Component {
             return response.json();
           })
           .then(json => {
-            message.success('Now you are logged in!', 1.0);
+            message.success('Now you are logged in!', 2.5);
             if (json.username) {
-              // this.userData.username = json.username;
-              // this.userData.image = json.image;
-
               this.props.handleLoginState(json.id, json.username, json.image);
             }
             console.log(json);
@@ -47,46 +44,49 @@ class NormalLoginForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <article className="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
-        <Form onSubmit={this.handleSubmit} className="login-form">
-          <Form.Item>
-            {getFieldDecorator('email', {
-              rules: [{ required: true, message: 'Please input your E-mail!' }],
-            })(
-              <Input
-                prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                placeholder="E-mail"
-              />,
-            )}
-          </Form.Item>
-          <Form.Item>
-            {getFieldDecorator('pw', {
-              rules: [
-                { required: true, message: 'Please input your Password!' },
-              ],
-            })(
-              <Input
-                prefix={
-                  <Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
-                type="password"
-                placeholder="Password"
-              />,
-            )}
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-            >
-              Log in
-            </Button>
-          </Form.Item>
-        </Form>
-      </article>
+      <Form
+        onSubmit={this.handleSubmit}
+        className="login-form"
+        style={{
+          padding: 10,
+          background: 'white',
+          minHeight: '20vh',
+          textAlign: 'center',
+          width: 400,
+        }}
+      >
+        <Form.Item>
+          {getFieldDecorator('email', {
+            rules: [{ required: true, message: 'Please input your E-mail!' }],
+          })(
+            <Input
+              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder="E-mail"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
+          {getFieldDecorator('pw', {
+            rules: [{ required: true, message: 'Please input your Password!' }],
+          })(
+            <Input
+              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type="password"
+              placeholder="Password"
+            />,
+          )}
+        </Form.Item>
+        <Form.Item>
+          <Button
+            type="primary"
+            icon="poweroff"
+            htmlType="submit"
+            className="login-form-button"
+          >
+            로그인
+          </Button>
+        </Form.Item>
+      </Form>
     );
   }
 }

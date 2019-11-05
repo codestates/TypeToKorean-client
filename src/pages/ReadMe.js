@@ -14,7 +14,7 @@ export default class ReadMe extends Component {
         <Card
           title="타자 연습을 통한 한국어 공부"
           extra={<a href="#">More</a>}
-          style={{ width: 700 }}
+          style={{ width: 900 }}
         >
           Thank you for choosing our Hangul Education Project, TypeToKorea. You
           will learn how to type Korean here. However, it's not only about
@@ -29,7 +29,7 @@ export default class ReadMe extends Component {
         <Card
           title="What Is Touch Typing?"
           extra={<a href="#">More</a>}
-          style={{ width: 700 }}
+          style={{ width: 900 }}
         >
           Touch typing is the ability to use muscle memory to find keys fast,
           without using the sense of sight, and with all the available fingers,
@@ -47,7 +47,7 @@ export default class ReadMe extends Component {
         <Card
           title=" How Does This Typing Tutor Work?"
           extra={<a href="#">More</a>}
-          style={{ width: 700 }}
+          style={{ width: 900 }}
         >
           There are several features in Keybr.com that set it apart from most of
           the typing practice software out there. In short, it employs
@@ -87,7 +87,7 @@ export default class ReadMe extends Component {
         <Card
           title="Typing Lessons, Is It Really Effective?"
           extra={<a href="#">More</a>}
-          style={{ width: 700 }}
+          style={{ width: 900 }}
         >
           We selected a few example profiles to show you how people advance in
           learning touch typing when using Keybr.com. These are real, anonymized

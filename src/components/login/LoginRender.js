@@ -35,49 +35,55 @@ class LoginRender extends React.Component {
 
   render() {
     return (
-      <div>
-        <article className="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
-          <div>
-            {this.props.loginImage ? (
-              <Avatar shape="square" size={64} icon={this.props.loginImage} />
-            ) : (
-              <Avatar shape="square" size={64} icon="close" />
-            )}
-          </div>
-          <div>
-            {this.props.loginUserName ? (
-              <Title level={4}>Username: {this.props.loginUserName}</Title>
-            ) : (
-              <Title level={4}>Username: something wrong!</Title>
-            )}
-          </div>
-          <div>
-            <Link to="/info">
-              <Button
-                type="primary"
-                loading={this.state.loading}
-                onClick={this.enterLoading}
-              >
-                Userinfo
-              </Button>
-            </Link>
-            <Link to="/">
-              <Button
-                type="primary"
-                icon="poweroff"
-                loading={this.state.iconLoading}
-                onClick={
-                  (this.enterIconLoading,
-                  () => {
-                    this.logoutButton();
-                  })
-                }
-              >
-                Logout
-              </Button>
-            </Link>
-          </div>
-        </article>
+      <div
+        style={{
+          padding: 10,
+          background: 'white',
+          minHeight: '20vh',
+          textAlign: 'center',
+          width: 400,
+        }}
+      >
+        <div>
+          {this.props.loginImage ? (
+            <Avatar shape="square" size={64} icon={this.props.loginImage} />
+          ) : (
+            <Avatar shape="square" size={64} icon="close" />
+          )}
+        </div>
+        <div>
+          {this.props.loginUserName ? (
+            <Title level={4}>Username: {this.props.loginUserName}</Title>
+          ) : (
+            <Title level={4}>Username: something wrong!</Title>
+          )}
+        </div>
+        <div>
+          {/*<Link to="/info">
+            <Button
+              type="primary"
+              loading={this.state.loading}
+              onClick={this.enterLoading}
+            >
+              Userinfo
+            </Button>
+          </Link>*/}
+          <Link to="/">
+            <Button
+              type="primary"
+              icon="poweroff"
+              loading={this.state.iconLoading}
+              onClick={
+                (this.enterIconLoading,
+                () => {
+                  this.logoutButton();
+                })
+              }
+            >
+              로그아웃
+            </Button>
+          </Link>
+        </div>
       </div>
     );
   }

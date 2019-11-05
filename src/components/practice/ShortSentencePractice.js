@@ -62,9 +62,14 @@ export default class ShortSentencePractice extends Component {
 
     return (
       <div>
-        <Card style={{ width: 900, marginBottom: 16, marginTop: 16 }}>
+        <Card style={{ marginBottom: 16, marginTop: 16, textAlign: 'center' }}>
           <p>
-            <PracticeData speed={speed} typo={typo} score={score} />
+            <PracticeData
+              speed={speed}
+              typo={typo}
+              score={score}
+              style={{ textAlign: 'center' }}
+            />
           </p>
           <p>
             <PracticeScreen

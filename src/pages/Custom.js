@@ -14,9 +14,7 @@ export default class Custom extends Component {
         <p>
           <CustomTextPractice />
         </p>
-        <p>
-          <ReadMe />
-        </p>
+        <p>{/*<ReadMe />*/}</p>
       </div>
     );
   }

@@ -14,6 +14,7 @@ import {
   AutoComplete,
   message,
   Modal,
+  Card,
 } from 'antd';
 
 const { confirm } = Modal;
@@ -118,7 +119,7 @@ class RegistrationForm extends React.Component {
     ));
 
     return (
-      <article className="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
+      <Card style={{ marginBottom: 16, marginTop: 16, textAlign: 'center' }}>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
           <Form.Item label="E-mail">
             {getFieldDecorator('email', {
@@ -161,7 +162,10 @@ class RegistrationForm extends React.Component {
           <Form.Item label="Phone Number">
             {getFieldDecorator('phone', {
               rules: [
-                { required: true, message: 'Please input your phone number!' },
+                {
+                  required: true,
+                  message: 'Please input your phone number!',
+                },
               ],
             })(<Input style={{ width: '100%' }} />)}
           </Form.Item>
@@ -171,7 +175,7 @@ class RegistrationForm extends React.Component {
             </Button>
           </Form.Item>
         </Form>
-      </article>
+      </Card>
     );
   }
 }

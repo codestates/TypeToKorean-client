@@ -18,7 +18,7 @@ class Log extends React.Component {
     } = this.props;
 
     return (
-      <div>
+      <div style={{ minHeight: '10vh' }}>
         {loginComplete ? (
           <LoginRender
             handleLogoutState={handleLogoutState}

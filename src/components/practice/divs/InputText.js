@@ -91,7 +91,7 @@ export default class InputText extends React.Component {
             speed: 0,
             typo: 0,
           });
-          document.querySelector('.inputType').value = null;
+          document.querySelector('.inputType').value = '';
         }
       }
     }

@@ -54,7 +54,6 @@ export default class ShortSentencePractice extends Component {
         .then(json => console.log(json))
         .catch(err => console.log(err));
     }
-
     // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
   }
 

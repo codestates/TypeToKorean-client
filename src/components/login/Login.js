@@ -50,9 +50,9 @@ class NormalLoginForm extends React.Component {
         style={{
           padding: 10,
           background: 'white',
-          minHeight: '20vh',
+          minHeight: '25vh',
           textAlign: 'center',
-          width: 400,
+          width: '22vw',
         }}
       >
         <Form.Item>

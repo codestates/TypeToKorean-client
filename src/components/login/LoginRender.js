@@ -39,9 +39,9 @@ class LoginRender extends React.Component {
         style={{
           padding: 10,
           background: 'white',
-          minHeight: '20vh',
+          minHeight: '25vh',
           textAlign: 'center',
-          width: 400,
+          width: '22vh',
         }}
       >
         <div>
@@ -68,21 +68,19 @@ class LoginRender extends React.Component {
               Userinfo
             </Button>
           </Link>*/}
-          <Link to="/">
-            <Button
-              type="primary"
-              icon="poweroff"
-              loading={this.state.iconLoading}
-              onClick={
-                (this.enterIconLoading,
-                () => {
-                  this.logoutButton();
-                })
-              }
-            >
-              로그아웃
-            </Button>
-          </Link>
+          <Button
+            type="primary"
+            icon="poweroff"
+            loading={this.state.iconLoading}
+            onClick={
+              (this.enterIconLoading,
+              () => {
+                this.logoutButton();
+              })
+            }
+          >
+            로그아웃
+          </Button>
         </div>
       </div>
     );

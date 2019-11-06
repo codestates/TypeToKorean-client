@@ -64,7 +64,7 @@ class UserInfo extends Component {
   render() {
     const { data } = this.state;
     return (
-      <Card style={{ marginBottom: 16, marginTop: 16, textAlign: 'center' }}>
+      <Card style={{ marginBottom: 16, marginTop: 16 }}>
         <BriefInfo />
         <br />
         <Stat1 />

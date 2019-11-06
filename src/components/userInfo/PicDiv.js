@@ -17,7 +17,7 @@ function beforeUpload(file) {
   if (!isLt2M) {
     message.error('Image must smaller than 2MB!');
   }
-  console.log(file);
+  console.log('가나다', file.name);
   return isJpgOrPng && isLt2M;
 }
 

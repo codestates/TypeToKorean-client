@@ -14,6 +14,7 @@ import {
   AutoComplete,
   message,
   Typography,
+  Card,
 } from 'antd';
 
 const { Option } = Select;
@@ -119,7 +120,7 @@ class SignoutForm extends React.Component {
     ));
 
     return (
-      <article className="mw6 center bg-white shadow-5 br3 pa3 pa4-ns mv3 ba b--black-10">
+      <Card style={{ marginBottom: 16, marginTop: 16, textAlign: 'center' }}>
         <Title level={3}>
           E-mail과 비밀번호를 입력하면 회원탈퇴가 완료됩니다.
         </Title>
@@ -157,7 +158,7 @@ class SignoutForm extends React.Component {
             </Button>
           </Form.Item>
         </Form>
-      </article>
+      </Card>
     );
   }
 }

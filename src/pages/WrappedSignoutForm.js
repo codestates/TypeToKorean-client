@@ -121,43 +121,45 @@ class SignoutForm extends React.Component {
 
     return (
       <Card style={{ marginBottom: 16, marginTop: 16, textAlign: 'center' }}>
-        <Title level={3}>
+        <Title level={3} style={{ textAlign: 'center' }}>
           E-mail과 비밀번호를 입력하면 회원탈퇴가 완료됩니다.
         </Title>
-        <Form {...formItemLayout} onSubmit={this.handleSubmit}>
-          <Form.Item label="E-mail">
-            {getFieldDecorator('email', {
-              rules: [
-                {
-                  type: 'email',
-                  message: 'The input is not valid E-mail!',
-                },
-                {
-                  required: true,
-                  message: 'Please input your E-mail!',
-                },
-              ],
-            })(<Input />)}
-          </Form.Item>
-          <Form.Item label="Password" hasFeedback>
-            {getFieldDecorator('pw', {
-              rules: [
-                {
-                  required: true,
-                  message: 'Please input your password!',
-                },
-                {
-                  validator: this.validateToNextPassword,
-                },
-              ],
-            })(<Input.Password />)}
-          </Form.Item>
-          <Form.Item {...tailFormItemLayout}>
-            <Button type="primary" htmlType="submit">
-              Signout
-            </Button>
-          </Form.Item>
-        </Form>
+        <Row type="flex" justify="center">
+          <Form {...formItemLayout} onSubmit={this.handleSubmit}>
+            <Form.Item label="E-mail">
+              {getFieldDecorator('email', {
+                rules: [
+                  {
+                    type: 'email',
+                    message: 'The input is not valid E-mail!',
+                  },
+                  {
+                    required: true,
+                    message: 'Please input your E-mail!',
+                  },
+                ],
+              })(<Input />)}
+            </Form.Item>
+            <Form.Item label="Password" hasFeedback>
+              {getFieldDecorator('pw', {
+                rules: [
+                  {
+                    required: true,
+                    message: 'Please input your password!',
+                  },
+                  {
+                    validator: this.validateToNextPassword,
+                  },
+                ],
+              })(<Input.Password />)}
+            </Form.Item>
+            <Form.Item {...tailFormItemLayout}>
+              <Button type="primary" htmlType="submit">
+                Signout
+              </Button>
+            </Form.Item>
+          </Form>
+        </Row>
       </Card>
     );
   }

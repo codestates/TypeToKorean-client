@@ -16,6 +16,7 @@ export default class PracticeScreen extends Component {
       scoring,
       postingResult,
       textToWriteNotNormalized,
+      getTextToWrite,
     } = this.props;
     return (
       <Card>
@@ -25,6 +26,7 @@ export default class PracticeScreen extends Component {
           scoring={scoring}
           postingResult={postingResult}
           textToWriteNotNormalized={textToWriteNotNormalized}
+          getTextToWrite={getTextToWrite}
         />
       </Card>
     );

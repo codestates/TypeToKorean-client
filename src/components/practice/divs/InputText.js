@@ -11,35 +11,16 @@ export default class InputText extends React.Component {
       typo: 0,
       inputValue: '',
     };
+
     this.handleEvent = this.handleEvent.bind(this);
-    this.clearLog = this.clearLog.bind(this);
-    this.callNextText = this.callNextText.bind(this);
     this.handleSpace = this.handleSpace.bind(this);
-    // this.clearInput = this.clearInput.bind(this);
   }
 
   async handleEvent(event) {
-    const {
-      speedCheckArray,
-      inputLength,
-      count,
-      speed,
-      typo,
-      inputValue,
-    } = this.state;
-    const { textToWrite, textToWriteNotNormalized, scoring } = this.props;
+    const { speedCheckArray } = this.state;
 
-    this.setState({ inputValue: event.target.value });
-
-    this.log = document.querySelector('.event-log-contents');
-
-    const inputType = document
-      .querySelector('.inputType')
-      .value.normalize('NFD');
-    const inputTypeNotNormalized = document.querySelector('.inputType').value;
-
-    if (event.keyCode === 27) {
-      this.setState({
+    if (event.which === 27) {
+      await this.setState({
         speedCheckArray: [],
         count: 0,
         speed: 0,
@@ -50,12 +31,25 @@ export default class InputText extends React.Component {
 
     if (event.type === 'keydown') {
       speedCheckArray.push(event.timeStamp);
-      this.setState(prevState => ({
+      await this.setState(prevState => ({
         speedCheckArray,
       }));
     }
+  }
 
-    if (textToWriteNotNormalized.length === inputTypeNotNormalized.length) {
+  async handleSpace(event) {
+    const {
+      speedCheckArray,
+      inputLength,
+      count,
+      speed,
+      typo,
+      inputValue,
+    } = this.state;
+    const { textToWrite, textToWriteNotNormalized, scoring } = this.props;
+    const inputTypeNotNormalized = document.querySelector('.inputType').value;
+
+    if (textToWriteNotNormalized.length + 1 === inputTypeNotNormalized.length) {
       const totalTime =
         speedCheckArray[speedCheckArray.length - 1] - speedCheckArray[0];
 
@@ -64,7 +58,7 @@ export default class InputText extends React.Component {
       // 여기서 오타 잡는 함수 실행
       const checkTypo = (text, input) => {
         let result = 0;
-        for (let i = 0; i < input.length; i += 1) {
+        for (let i = 0; i < input.length - 1; i += 1) {
           if (text[i] !== input[i]) {
             result += 1;
           }
@@ -78,92 +72,27 @@ export default class InputText extends React.Component {
 
       scoring(KPM, newTypo, totalTime);
 
-      this.setState(prevState => ({
+      await this.setState(prevState => ({
         typo: newTypo,
       }));
 
-      console.log('TypoCount', typo);
-      console.log('KPM', KPM);
-      console.log('inputLength', inputLength);
-      console.log('speed', speedCheckArray);
-    }
-
-    // if (textToWriteNotNormalized.length + 1 === inputTypeNotNormalized.length) {
-    //   if (event.type === 'keydown') {
-    //     if (event.keyCode === 13 || event.keyCode === 32) {
-    //       console.log('enter, space working');
-    //       await this.setState({
-    //         speedCheckArray: [],
-    //         count: 0,
-    //         speed: 0,
-    //         typo: 0,
-    //         inputValue: '',
-    //       });
-    //       // event.persist();
-    //       document.querySelector('.inputType').value = '';
-    //       // event.target.value = '';
-    //     }
-    //   }
-    // }
-
-    // if (textToWriteNotNormalized.length === inputTypeNotNormalized.length) {
-
-    // }
-  }
-
-  async handleSpace(event) {
-    const { textToWriteNotNormalized } = this.props;
-    const inputTypeNotNormalized = document.querySelector('.inputType').value;
-
-    if (textToWriteNotNormalized.length + 1 === inputTypeNotNormalized.length) {
-      if (event.keyCode === 13 || event.keyCode === 32) {
+      if (event.which === 13 || event.which === 32) {
         console.log('enter, space working');
+        document.querySelector('.inputType').value = '';
+        // 점수 state로 올릴 때도 지워주자
         await this.setState({
           speedCheckArray: [],
           count: 0,
           speed: 0,
           typo: 0,
-          inputValue: '',
-        });
-        // event.persist();
-        document.querySelector('.inputType').value = '';
-        // event.target.value = '';
-      }
-    }
-  }
-
-  // clearInput(event) {
-  //   const { textToWriteNotNormalized } = this.props;
-  //   const inputTypeNotNormalized = document.querySelector('.inputType').value;
-
-  //   if (textToWriteNotNormalized.length === inputTypeNotNormalized.length) {
-  //     if (event.type === 'keydown') {
-  //       if (event.keyCode === 13 || event.keyCode === 32) {
-  //         document.querySelector('.inputType').value = null;
-  //       }
-  //     }
-  //   }
-  // }
-
-  clearLog() {
-    this.log = document.querySelector('.event-log-contents');
-    this.log.innerHTML = '';
-  }
-
-  callNextText(event) {
-    const { typo, speed } = this.state;
-    const { scoring, postingResult } = this.props;
-
-    if (event.type === 'keydown') {
-      if (event.keyCode === 13) {
-        const checkScore = scoring(speed, typo);
-        this.setState({
-          speedCheckArray: [],
-          count: 0,
-          speed: 0,
-          typo: 0,
+          inputValue: null,
         });
       }
+      // console.log('TypoCount', typo);
+      // console.log('KPM', KPM);
+      // console.log('inputLength', inputLength);
+      // console.log('speed', speedCheckArray);
+      // console.log('inputType', inputTypeNotNormalized);
     }
   }
 
@@ -172,23 +101,10 @@ export default class InputText extends React.Component {
       <div>
         <div className="control">
           <input
+            style={{ width: '100%' }}
             className="inputType"
             onKeyDown={this.handleEvent}
             onKeyUp={this.handleSpace}
-          />
-        </div>
-
-        <div className="event-log">
-          <testarea readOnly className="event-log-contents" cols="50" />
-          <button className="clear-log" onClick={this.clearLog}>
-            Clear
-          </button>
-          <button onClick={this.handleClick}>check log</button>
-          <textarea
-            readOnly
-            className="event-log-contents"
-            rows="8"
-            cols="25"
           />
         </div>
       </div>

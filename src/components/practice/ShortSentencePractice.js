@@ -75,8 +75,8 @@ export default class ShortSentencePractice extends Component {
       textToWrite: data[textCountX][textCountY].normalize('NFD'),
       textToWriteNotNormalized: data[textCountX][textCountY],
     });
-    document.querySelector('.inputType').value = null;
 
+    document.querySelector('.inputType').value = null;
     // 점수를 받아서 계산하고, state로 전부 올린다, state에 변경된 데이터 값도 들어간다.
   }
 

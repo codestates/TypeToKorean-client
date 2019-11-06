@@ -8,12 +8,15 @@ export default class ShortSentencePractice extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      data: '',
       textToWrite: '소소하지만 확실한 행복.'.normalize('NFD'),
       textToWriteNotNormalized: '소소하지만 확실한 행복.',
       totaltime: 0,
       speed: 0,
       typo: 0,
       score: 0,
+      textCountX: 0,
+      textCountY: 0,
     };
 
     this.scoring = this.scoring.bind(this);
@@ -21,16 +24,60 @@ export default class ShortSentencePractice extends Component {
     this.getTextToWrite = this.getTextToWrite.bind(this);
   }
 
-  scoring(speed, typo, totaltime) {
+  async componentDidMount() {
+    console.log('compomentDiDMount on ShortSentencePRactice');
+    await this.getTextToWrite();
+    const { data } = this.state;
+
+    this.setState({
+      textToWrite: data[0][0].normalize('NFD'),
+      textToWriteNotNormalized: data[0][0],
+      textCountX: 0,
+      textCountY: 1,
+    });
+  }
+
+  async getTextToWrite() {
+    const data = await window.fetch('http://localhost:5000/sample');
+    const parseData = await data.json();
+    this.setState({
+      data: parseData,
+    });
+  }
+
+  async scoring(speed, typo, totaltime) {
     const score = (speed * 100) / ((typo + 1) * 1.3);
     this.postingResult(speed, typo, totaltime, score);
+
+    const { data, textCountX, textCountY } = this.state;
+
+    this.setState({
+      textCountY: textCountY + 1,
+    });
+    if (!data[textCountX][textCountY + 1]) {
+      this.setState({
+        textCountX: textCountX + 1,
+        textCountY: 0,
+      });
+      if (!data[textCountX + 1]) {
+        this.setState({
+          textCountX: 0,
+          textCountY: 0,
+        });
+      }
+    }
+
     this.setState({
       totaltime,
       speed,
       typo,
       score,
+      textToWrite: data[textCountX][textCountY].normalize('NFD'),
+      textToWriteNotNormalized: data[textCountX][textCountY],
     });
-    // 점수를 받아서 계산하고, state로 전부 올린다.
+    document.querySelector('.inputType').value = null;
+
+    // 점수를 받아서 계산하고, state로 전부 올린다, state에 변경된 데이터 값도 들어간다.
   }
 
   postingResult(speed, typo, totaltime, score) {
@@ -57,15 +104,6 @@ export default class ShortSentencePractice extends Component {
       .catch(err => console.log(err));
     // }
     // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
-  }
-
-  async getTextToWrite() {
-    const data = await fetch('http://localhost:5000/sample');
-    const parseData = await data.json();
-    this.setState({
-      textToWrite: parseData.normalize('NFD'),
-      textToWriteNotNormalized: parseData,
-    });
   }
 
   render() {

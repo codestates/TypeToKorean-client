@@ -18,6 +18,7 @@ export default class ShortSentencePractice extends Component {
 
     this.scoring = this.scoring.bind(this);
     this.postingResult = this.postingResult.bind(this);
+    this.getTextToWrite = this.getTextToWrite.bind(this);
   }
 
   scoring(speed, typo, totaltime) {
@@ -43,19 +44,28 @@ export default class ShortSentencePractice extends Component {
       totaltime,
     };
 
-    if (loginComplete) {
-      window
-        .fetch('http://localhost:5000/typeInformation/id', {
-          method: 'POST',
-          body: JSON.stringify(result),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(res => res.json())
-        .catch(err => console.log(err));
-    }
+    // if (loginComplete) {
+    window
+      .fetch('http://localhost:5000/typeInformation/id', {
+        method: 'POST',
+        body: JSON.stringify(result),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .catch(err => console.log(err));
+    // }
     // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
+  }
+
+  async getTextToWrite() {
+    const data = await fetch('http://localhost:5000/sample');
+    const parseData = await data.json();
+    this.setState({
+      textToWrite: parseData.normalize('NFD'),
+      textToWriteNotNormalized: parseData,
+    });
   }
 
   render() {
@@ -84,6 +94,7 @@ export default class ShortSentencePractice extends Component {
               scoring={this.scoring}
               postingResult={this.postingResult}
               textToWriteNotNormalized={textToWriteNotNormalized}
+              getTextToWrite={this.getTextToWrite}
             />
           </p>
         </Card>

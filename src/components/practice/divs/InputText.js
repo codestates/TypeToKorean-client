@@ -112,7 +112,7 @@ export default class InputText extends React.Component {
   }
 
   async handleSpace(event) {
-    const { textToWriteNotNormalized } = this.props;
+    const { textToWriteNotNormalized, getTextToWrite } = this.props;
     const inputTypeNotNormalized = document.querySelector('.inputType').value;
 
     if (textToWriteNotNormalized.length + 1 === inputTypeNotNormalized.length) {
@@ -128,6 +128,8 @@ export default class InputText extends React.Component {
         // event.persist();
         document.querySelector('.inputType').value = '';
         // event.target.value = '';
+
+        // getTextToWrite();
       }
     }
   }

@@ -41,7 +41,7 @@ export default class InputText extends React.Component {
     }
   }
 
-  handleSpace(event) {
+  async handleSpace(event) {
     event.persist();
     const {
       speedCheckArray,
@@ -88,7 +88,7 @@ export default class InputText extends React.Component {
         console.log('enter, space working');
         document.querySelector('.inputType').value = null;
         // 점수 state로 올릴 때도 지워주자
-        this.setState(
+        await this.setState(
           {
             speedCheckArray: [],
             count: 0,
@@ -103,6 +103,7 @@ export default class InputText extends React.Component {
           //   });
           // },
         );
+        return '잘하셨어요, keep going!';
       }
 
       if (
@@ -146,14 +147,12 @@ export default class InputText extends React.Component {
       <div>
         <div className="control">
           <div className="ant-card-bordered">{infoMsg}</div>
-          {speedCheckArray === [] ? null : (
-            <input
-              style={{ width: '100%' }}
-              className="inputType"
-              onKeyDown={this.handleEvent}
-              onKeyUp={this.handleSpace}
-            />
-          )}
+          <input
+            style={{ width: '100%' }}
+            className="inputType"
+            onKeyDown={this.handleEvent}
+            onKeyUp={this.handleSpace}
+          />
         </div>
       </div>
     );

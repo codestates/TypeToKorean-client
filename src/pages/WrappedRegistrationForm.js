@@ -15,10 +15,12 @@ import {
   message,
   Modal,
   Card,
+  Typography,
 } from 'antd';
 
 const { confirm } = Modal;
 const { Option } = Select;
+const { Title } = Typography;
 const AutoCompleteOption = AutoComplete.Option;
 
 class RegistrationForm extends React.Component {
@@ -120,6 +122,7 @@ class RegistrationForm extends React.Component {
 
     return (
       <Card style={{ marginBottom: 16, marginTop: 16, textAlign: 'center' }}>
+        <Title level={3}>회원가입</Title>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
           <Form.Item label="E-mail">
             {getFieldDecorator('email', {

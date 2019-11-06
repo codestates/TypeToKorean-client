@@ -143,10 +143,11 @@ export default class App extends Component {
                   loginImage={loginImage}
                   handleLoginState={this.handleLoginState}
                   handleLogoutState={this.handleLogoutState}
+                  style={{ width: '22vw' }}
                 />
                 <Menu
                   onClick={this.handleClick}
-                  style={{ width: '22vw' }}
+                  style={{ width: '22vw', height: '55vh', background: 'white' }}
                   defaultSelectedKeys={['1']}
                   defaultOpenKeys={['sub1']}
                   mode="inline"

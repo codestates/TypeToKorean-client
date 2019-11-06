@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Link } from 'react-router-dom';
-import { Form, Icon, Input, Button, Checkbox, message } from 'antd';
-import LoginRender from './LoginRender';
-import Log from './Log';
+import { Form, Icon, Input, Button, message, Typography } from 'antd';
+
+const { Title } = Typography;
 
 class NormalLoginForm extends React.Component {
   constructor(props) {
@@ -31,7 +30,7 @@ class NormalLoginForm extends React.Component {
             return response.json();
           })
           .then(json => {
-            message.success('Now you are logged in!', 2.5);
+            message.success('성공적으로 로그인 되었습니다!', 2.5);
             if (json.username) {
               this.props.handleLoginState(json.id, json.username, json.image);
             }
@@ -50,11 +49,13 @@ class NormalLoginForm extends React.Component {
         style={{
           padding: 10,
           background: 'white',
-          minHeight: '25vh',
           textAlign: 'center',
-          width: '22vw',
         }}
       >
+        <Form.Item>
+          <br />
+          <Title level={2}>로그인 화면</Title>
+        </Form.Item>
         <Form.Item>
           {getFieldDecorator('email', {
             rules: [{ required: true, message: 'Please input your E-mail!' }],

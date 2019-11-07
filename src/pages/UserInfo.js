@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import BriefInfo from '../components/userInfo/BriefInfo';
 import Stat1 from '../components/userInfo/Stat1';
 import Stat2 from '../components/userInfo/Stat2';
+import { Card } from 'antd';
 
 class UserInfo extends Component {
   constructor(props) {
@@ -63,11 +64,13 @@ class UserInfo extends Component {
   render() {
     const { data } = this.state;
     return (
-      <div>
+      <Card style={{ marginBottom: 16, marginTop: 16 }}>
         <BriefInfo />
+        <br />
         <Stat1 />
+        <br />
         <Stat2 Stat2 data={data} title="Visits" color="#70CAD1" />
-      </div>
+      </Card>
     );
   }
 }

@@ -4,26 +4,136 @@ import { Card } from 'antd';
 import PracticeData from './PracticeData';
 import PracticeScreen from './PracticeScreen';
 
-export default class LongSentencesPractice extends Component {
+export default class LongSentencePractice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textToWrite:
-        '유구한 역사와 전통에 빛나는 우리 대한국민은 3·1운동으로 건립된 대한민국임시정부의 법통과 불의에 항거한 4·19민주이념을 계승하고, 조국의 민주개혁과 평화적 통일의 사명에 입각하여 정의·인도와 동포애로써 민족의 단결을 공고히 하고, 모든 사회적 폐습과 불의를 타파하며, 자율과 조화를 바탕으로 자유민주적 기본질서를 더욱 확고히 하여 정치·경제·사회·문화의 모든 영역에 있어서 각인의 기회를 균등히 하고, 능력을 최고도로 발휘하게 하며, 자유와 권리에 따르는 책임과 의무를 완수하게 하여, 안으로는 국민생활의 균등한 향상을 기하고 밖으로는 항구적인 세계평화와 인류공영에 이바지함으로써 우리들과 우리들의 자손의 안전과 자유와 행복을 영원히 확보할 것을 다짐하면서 1948년 7월 12일에 제정되고 8차에 걸쳐 개정된 헌법을 이제 국회의 의결을 거쳐 국민투표에 의하여 개정한다.',
+      data: '',
+      textToWrite: '소소하지만 확실한 행복.'.normalize('NFD'),
+      textToWriteNotNormalized: '소소하지만 확실한 행복.',
+      totaltime: 0,
+      speed: 0,
+      typo: 0,
+      score: 0,
+      textCountX: 0,
+      textCountY: 0,
     };
+
+    this.scoring = this.scoring.bind(this);
+    this.postingResult = this.postingResult.bind(this);
+    this.getTextToWrite = this.getTextToWrite.bind(this);
+  }
+
+  async componentDidMount() {
+    console.log('compomentDiDMount on ShortSentencePRactice');
+    await this.getTextToWrite();
+    const { data } = this.state;
+
+    this.setState({
+      textToWrite: data[0][0].normalize('NFD'),
+      textToWriteNotNormalized: data[0][0],
+      textCountX: 0,
+      textCountY: 1,
+    });
+  }
+
+  async getTextToWrite() {
+    const data = await window.fetch('http://localhost:5000/sample/long');
+    const parseData = await data.json();
+    this.setState({
+      data: parseData,
+    });
+  }
+
+  async scoring(speed, typo, totaltime) {
+    const score = (speed * 100) / ((typo + 1) * 1.3);
+    this.postingResult(speed, typo, totaltime, score);
+
+    const { data, textCountX, textCountY } = this.state;
+
+    this.setState({
+      textCountY: textCountY + 1,
+    });
+    if (!data[textCountX][textCountY + 1]) {
+      this.setState({
+        textCountX: textCountX + 1,
+        textCountY: 0,
+      });
+      if (!data[textCountX + 1]) {
+        this.setState({
+          textCountX: 0,
+          textCountY: 0,
+        });
+      }
+    }
+
+    this.setState({
+      totaltime,
+      speed,
+      typo,
+      score,
+      textToWrite: data[textCountX][textCountY].normalize('NFD'),
+      textToWriteNotNormalized: data[textCountX][textCountY],
+    });
+
+    document.querySelector('.inputType').value = null;
+    // 점수를 받아서 계산하고, state로 전부 올린다, state에 변경된 데이터 값도 들어간다.
+  }
+
+  postingResult(speed, typo, totaltime, score) {
+    // 서버로 보내는 부분이 camelCase가 안되있다.
+    const { loginId, loginUserName, loginComplete } = this.props;
+
+    const result = {
+      typeSpeed: speed,
+      score,
+      typo,
+      totaltime,
+    };
+
+    // if (loginComplete) {
+    window
+      .fetch('http://localhost:5000/typeInformation/id', {
+        method: 'POST',
+        body: JSON.stringify(result),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(res => res.json())
+      .catch(err => console.log(err));
+    // }
+    // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
   }
 
   render() {
-    const { textToWrite } = this.state;
+    const {
+      textToWrite,
+      textToWriteNotNormalized,
+      score,
+      speed,
+      typo,
+    } = this.state;
 
     return (
       <div>
         <Card style={{ marginBottom: 16, marginTop: 16, textAlign: 'center' }}>
           <p>
-            <PracticeData />
+            <PracticeData
+              speed={speed}
+              typo={typo}
+              score={score}
+              style={{ textAlign: 'center' }}
+            />
           </p>
           <p>
-            <PracticeScreen textToWrite={textToWrite} />
+            <PracticeScreen
+              textToWrite={textToWrite}
+              scoring={this.scoring}
+              postingResult={this.postingResult}
+              textToWriteNotNormalized={textToWriteNotNormalized}
+              getTextToWrite={this.getTextToWrite}
+            />
           </p>
         </Card>
       </div>

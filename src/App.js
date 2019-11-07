@@ -21,11 +21,14 @@ export default class App extends Component {
       loginId: '',
       loginUserName: '',
       loginImage: '',
+      loginEmail: '',
+      loginPhone: '',
       loginComplete: false,
     };
 
     this.handleLoginState = this.handleLoginState.bind(this);
     this.handleLogoutState = this.handleLogoutState.bind(this);
+    this.userinfoClick = this.userinfoClick.bind(this);
   }
 
   handleLoginState(id, username, image) {
@@ -43,8 +46,40 @@ export default class App extends Component {
     });
   }
 
+  userinfoClick() {
+    // 로그인 상태를 확인하는 get요청을 한번 더 보내는게 좋을 것 같다.
+    fetch('http://localhost:5000/users/id', {
+      method: 'GET',
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+        console.log(json);
+      });
+  }
+
+  handleUserinfoCheck(id, username, image, email, phone) {
+    if (this.state.loginComplete) {
+      this.setState({
+        loginId: id,
+        loginUserName: username,
+        loginImage: image,
+        loginEmail: email,
+        loginPhone: phone,
+      });
+    }
+  }
+
   render() {
-    const { loginId, loginUserName, loginComplete, loginImage } = this.state;
+    const {
+      loginId,
+      loginUserName,
+      loginComplete,
+      loginImage,
+      loginEmail,
+      loginPhone,
+    } = this.state;
 
     return (
       <div>
@@ -53,7 +88,8 @@ export default class App extends Component {
             <Col
               span={19}
               style={{
-                background: 'linear-gradient(to left, #3678f1, #ffffff)',
+                background: 'linear-gradient(to right, #3678f1, #ffffff)',
+                width: '78vw',
               }}
             >
               <Content style={{ margin: '0 16px' }}>
@@ -71,19 +107,34 @@ export default class App extends Component {
                   <Route path="/custom">
                     <Custom />
                   </Route>
-                  <Route path="/info">
-                    <UserInfo />
-                  </Route>
-                  <Route path="/signin">
-                    <WrappedRegistrationForm />
-                  </Route>
+
+                  {this.state.loginComplete ? (
+                    <Route path="/info">
+                      <UserInfo />
+                    </Route>
+                  ) : (
+                    <Route path="/info">
+                      <WrappedRegistrationForm />
+                    </Route>
+                  )}
+
+                  {this.state.loginComplete ? (
+                    <Route path="/signin">
+                      <UserInfo />
+                    </Route>
+                  ) : (
+                    <Route path="/signin">
+                      <WrappedRegistrationForm />
+                    </Route>
+                  )}
+
                   <Route path="/signout">
                     <WrappedSignoutForm />
                   </Route>
                 </Switch>
               </Content>
             </Col>
-            <Col span={5} style={{ background: '#ffffff' }}>
+            <Col span={5} style={{ background: '#ffffff', width: '22vw' }}>
               <Sider>
                 <Log
                   loginId={loginId}
@@ -92,10 +143,11 @@ export default class App extends Component {
                   loginImage={loginImage}
                   handleLoginState={this.handleLoginState}
                   handleLogoutState={this.handleLogoutState}
+                  style={{ width: '22vw' }}
                 />
                 <Menu
                   onClick={this.handleClick}
-                  style={{ width: 400 }}
+                  style={{ width: '22vw', height: '55vh', background: 'white' }}
                   defaultSelectedKeys={['1']}
                   defaultOpenKeys={['sub1']}
                   mode="inline"

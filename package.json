@@ -1,6 +1,9 @@
 {
-  "name": "typetokorean-client",
-  "version": "0.1.0",
+  "name": "typetokorean-server",
+  "version": "0.9.0",
+  "description": "TypeToKorean-server",
+  "author": "Sanghoon Han, Hongsik Kim, Dongho Sin",
+  "license": "UNLICENSED",
   "private": true,
   "dependencies": {
     "antd": "^3.24.3",

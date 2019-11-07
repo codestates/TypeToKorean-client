@@ -4,35 +4,80 @@ import { Card } from 'antd';
 import PracticeData from './PracticeData';
 import PracticeScreen from './PracticeScreen';
 
-export default class LongSentencesPractice extends Component {
+export default class LongSentencePractice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      textToWrite: '강의 위주의 주입식 교육이 아닌 검증된 커리큘럼과 체계적인 스케줄에 따라 학습하고, 새로운 기술이나 문제들이 발생해도 스스로 해결할 수 있는 능력을 키우는 학습 커뮤니티입니다. 미국 실리콘밸리 뿐만 아니라 한국에서도 직접 현지화하고 검증한 커리큘럼을 기반으로 진행되는맞춤형 프로그램을 통해 소프트웨어 엔지니어, 데이터 사이언티스트, 창업가 등의 새로운 커리어를 시작하세요.'.normalize(
-        'NFD',
-      ),
-      textToWriteNotNormalized:
-        '강의 위주의 주입식 교육이 아닌 검증된 커리큘럼과 체계적인 스케줄에 따라 학습하고, 새로운 기술이나 문제들이 발생해도 스스로 해결할 수 있는 능력을 키우는 학습 커뮤니티입니다. 미국 실리콘밸리 뿐만 아니라 한국에서도 직접 현지화하고 검증한 커리큘럼을 기반으로 진행되는맞춤형 프로그램을 통해 소프트웨어 엔지니어, 데이터 사이언티스트, 창업가 등의 새로운 커리어를 시작하세요.',
+      data: '',
+      textToWrite: '소소하지만 확실한 행복.'.normalize('NFD'),
+      textToWriteNotNormalized: '소소하지만 확실한 행복.',
       totaltime: 0,
       speed: 0,
       typo: 0,
       score: 0,
+      textCountX: 0,
+      textCountY: 0,
     };
 
     this.scoring = this.scoring.bind(this);
     this.postingResult = this.postingResult.bind(this);
+    this.getTextToWrite = this.getTextToWrite.bind(this);
   }
 
-  scoring(speed, typo, totaltime) {
+  async componentDidMount() {
+    console.log('compomentDiDMount on ShortSentencePRactice');
+    await this.getTextToWrite();
+    const { data } = this.state;
+
+    this.setState({
+      textToWrite: data[0][0].normalize('NFD'),
+      textToWriteNotNormalized: data[0][0],
+      textCountX: 0,
+      textCountY: 1,
+    });
+  }
+
+  async getTextToWrite() {
+    const data = await window.fetch('http://localhost:5000/sample/long');
+    const parseData = await data.json();
+    this.setState({
+      data: parseData,
+    });
+  }
+
+  async scoring(speed, typo, totaltime) {
     const score = (speed * 100) / ((typo + 1) * 1.3);
     this.postingResult(speed, typo, totaltime, score);
+
+    const { data, textCountX, textCountY } = this.state;
+
+    this.setState({
+      textCountY: textCountY + 1,
+    });
+    if (!data[textCountX][textCountY + 1]) {
+      this.setState({
+        textCountX: textCountX + 1,
+        textCountY: 0,
+      });
+      if (!data[textCountX + 1]) {
+        this.setState({
+          textCountX: 0,
+          textCountY: 0,
+        });
+      }
+    }
+
     this.setState({
       totaltime,
       speed,
       typo,
       score,
+      textToWrite: data[textCountX][textCountY].normalize('NFD'),
+      textToWriteNotNormalized: data[textCountX][textCountY],
     });
-    // 점수를 받아서 계산하고, state로 전부 올린다.
+
+    document.querySelector('.inputType').value = null;
+    // 점수를 받아서 계산하고, state로 전부 올린다, state에 변경된 데이터 값도 들어간다.
   }
 
   postingResult(speed, typo, totaltime, score) {
@@ -87,6 +132,7 @@ export default class LongSentencesPractice extends Component {
               scoring={this.scoring}
               postingResult={this.postingResult}
               textToWriteNotNormalized={textToWriteNotNormalized}
+              getTextToWrite={this.getTextToWrite}
             />
           </p>
         </Card>

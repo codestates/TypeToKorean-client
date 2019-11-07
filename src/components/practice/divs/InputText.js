@@ -4,12 +4,7 @@ export default class InputText extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      speedCheckArray: [0],
-      inputLength: 0,
-      count: 0,
-      speed: 0,
-      typo: 0,
-      inputValue: '',
+      speedStart: 0,
       infoMsg: 'Welcome To TypeToKorean',
     };
 
@@ -18,45 +13,34 @@ export default class InputText extends React.Component {
     this.checkTypo = this.checkTypo.bind(this);
   }
 
-  async handleEvent(event) {
-    const { speedCheckArray } = this.state;
-    const { textToWriteNotNormalized } = this.props;
+  handleEvent(event) {
     const inputTypeNotNormalized = document.querySelector('.inputType').value;
 
     if (event.which === 27) {
-      await this.setState({
-        speedCheckArray: [],
-        count: 0,
-        speed: 0,
-        typo: 0,
+      this.setState({
+        speedStart: 0,
       });
       document.querySelector('.inputType').value = null;
     }
 
     if (event.type === 'keydown') {
-      speedCheckArray.push(event.timeStamp);
-      this.setState(prevState => ({
-        speedCheckArray,
-      }));
+      if (inputTypeNotNormalized.length === 1) {
+        const speedStart = event.timeStamp;
+        this.setState({
+          speedStart,
+        });
+      }
     }
   }
 
-  async handleSpace(event) {
+  handleSpace(event) {
     event.persist();
-    const {
-      speedCheckArray,
-      inputLength,
-      count,
-      speed,
-      typo,
-      inputValue,
-    } = this.state;
+    const { speedStart } = this.state;
     const { textToWrite, textToWriteNotNormalized, scoring } = this.props;
     const inputTypeNotNormalized = document.querySelector('.inputType').value;
 
     if (textToWriteNotNormalized.length + 1 === inputTypeNotNormalized.length) {
-      const totalTime =
-        speedCheckArray[speedCheckArray.length - 1] - speedCheckArray[0];
+      const totalTime = event.timeStamp - speedStart;
 
       const KPM = textToWrite.length * (60000 / totalTime); // 속도 계산
 
@@ -70,39 +54,20 @@ export default class InputText extends React.Component {
 
       if (newTypo / inputTypeNotNormalized.length > 0.5) {
         this.setState({
-          speedCheckArray: [],
-          count: 0,
-          speed: 0,
-          typo: 0,
-          inputValue: null,
+          speedStart: 0,
           infoMsg: '오타율이 50% 이상이면 데이터를 기록하지 않습니다.',
         });
         return '오타율이 50% 이상이면 데이터를 기록하지 않습니다.';
       }
 
-      this.setState(prevState => ({
-        typo: newTypo,
-      }));
-
       if (event.which === 13 || event.which === 32) {
         console.log('enter, space working');
         document.querySelector('.inputType').value = null;
         // 점수 state로 올릴 때도 지워주자
-        await this.setState(
-          {
-            speedCheckArray: [],
-            count: 0,
-            speed: 0,
-            typo: 0,
-            inputValue: null,
-            infoMsg: '잘하셨어요, keep going!',
-          },
-          // () => {
-          //   this.setState({
-          //     speedCheckArray: [],
-          //   });
-          // },
-        );
+        this.setState({
+          speedStart: 0,
+          infoMsg: '잘하셨어요, keep going!',
+        });
         return '잘하셨어요, keep going!';
       }
 
@@ -111,11 +76,7 @@ export default class InputText extends React.Component {
         textToWriteNotNormalized.length + 3 === inputTypeNotNormalized.length
       ) {
         this.setState({
-          speedCheckArray: [],
-          count: 0,
-          speed: 0,
-          typo: 0,
-          inputValue: null,
+          speedStart: 0,
           infoMsg:
             '모두 다 작성을 하시고 스페이스를 눌러주세요 ! 다른 키를 누르면 오타가 증가됩니다.',
         });
@@ -141,7 +102,7 @@ export default class InputText extends React.Component {
   }
 
   render() {
-    const { infoMsg, speedCheckArray } = this.state;
+    const { infoMsg } = this.state;
 
     return (
       <div>

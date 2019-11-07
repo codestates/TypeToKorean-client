@@ -1,8 +1,8 @@
 {
   "name": "typetokorean-server",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "TypeToKorean-server",
-  "author": "Sanghoon Han, Hongsik Kim, Dongho Sin",
+  "author": "Sanghoon Han, Hongshik Kim, Dongho Shin",
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {

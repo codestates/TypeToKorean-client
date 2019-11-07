@@ -31,12 +31,13 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        fetch('http://localhost:5000/users', {
+        fetch('http://localhost:5000/signin', {
           method: 'POST',
           body: JSON.stringify(values),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           },
+          credentials: "include"
         })
           .then(response => {
             return response.json();

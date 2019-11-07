@@ -25,8 +25,9 @@ class LoginRender extends React.Component {
     fetch('http://localhost:5000/logout', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
+      credentials: "include"
     }).then(response => {
       this.props.handleLogoutState();
       return response.json();

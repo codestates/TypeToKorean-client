@@ -49,8 +49,9 @@ export default class ShortSentencePractice extends Component {
           method: 'POST',
           body: JSON.stringify(result),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           },
+          credentials: "include"
         })
         .then(res => res.json())
         .catch(err => console.log(err));

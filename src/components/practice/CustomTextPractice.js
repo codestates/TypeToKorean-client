@@ -48,23 +48,16 @@ export default class CustomSentencePractice extends Component {
   scoring(speed, typo, totaltime) {
     const score = (speed * 100) / ((typo + 1) * 1.3);
     this.postingResult(speed, typo, totaltime, score);
-
     const { data, textCountX, textCountY } = this.state;
-
     this.setState({
       textCountY: textCountY + 1,
     });
+
     if (!data[textCountX][textCountY + 1]) {
       this.setState({
-        textCountX: textCountX + 1,
+        textCountX: 0,
         textCountY: 0,
       });
-      if (!data[textCountX + 1]) {
-        this.setState({
-          textCountX: 0,
-          textCountY: 0,
-        });
-      }
     }
 
     this.setState({
@@ -91,23 +84,23 @@ export default class CustomSentencePractice extends Component {
       totaltime,
     };
 
-    // if (loginComplete) {
-    window
-      .fetch('http://localhost:5000/typeInformation/id', {
-        method: 'POST',
-        body: JSON.stringify(result),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => res.json())
-      .catch(err => console.log(err));
-    // }
+    if (loginComplete) {
+      window
+        .fetch('http://localhost:5000/typeInformation/id', {
+          method: 'POST',
+          body: JSON.stringify(result),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err));
+    }
     // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
   }
 
   submitCustomText(value) {
-    const { data } = this.state;
     // if (value.length > 40){
     const resultArray = [];
     const newArray = [];
@@ -122,8 +115,9 @@ export default class CustomSentencePractice extends Component {
     //   }
     // }
     this.setState({
-      textToWrite: resultArray[0][0].normalize('NFD'),
-      textToWriteNotNormalized: resultArray[0][0],
+      data: newArray,
+      textToWrite: newArray[0][0].normalize('NFD'),
+      textToWriteNotNormalized: newArray[0][0],
     });
   } // CustomText 등록
 

@@ -25,7 +25,7 @@ export default class LongSentencePractice extends Component {
   }
 
   async componentDidMount() {
-    console.log('compomentDiDMount on ShortSentencePRactice');
+    console.log('compomentDiDMount on LongSentencePractice');
     await this.getTextToWrite();
     const { data } = this.state;
 

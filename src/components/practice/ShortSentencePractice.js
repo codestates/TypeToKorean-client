@@ -91,18 +91,19 @@ export default class ShortSentencePractice extends Component {
       totaltime,
     };
 
-    // if (loginComplete) {
-    window
-      .fetch('http://localhost:5000/typeInformation/id', {
-        method: 'POST',
-        body: JSON.stringify(result),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(res => res.json())
-      .catch(err => console.log(err));
-    // }
+   if (loginComplete) {
+      window
+        .fetch('http://localhost:5000/typeInformation/id', {
+          method: 'POST',
+          body: JSON.stringify(result),
+          headers: {
+            "Content-Type": "application/json"
+          },
+          credentials: "include"
+        })
+        .then(res => res.json())
+        .catch(err => console.log(err));
+    }
     // post 요청을 통해 받아온 1 연습 당 데이터를 전송한다.
   }
 

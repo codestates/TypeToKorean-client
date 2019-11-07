@@ -24,8 +24,9 @@ class LoginRender extends React.Component {
     fetch('http://localhost:5000/logout', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json"
       },
+      credentials: "include"
     }).then(response => {
       message.success('성공적으로 로그아웃 되었습니다!', 2.5);
       this.props.handleLogoutState();

@@ -36,8 +36,9 @@ class SignoutForm extends React.Component {
           method: 'POST',
           body: JSON.stringify(values),
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json"
           },
+          credentials: "include"
         })
           .then(response => {
             return response.json();

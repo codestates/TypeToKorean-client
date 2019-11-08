@@ -15,6 +15,16 @@ export default class InputText extends React.Component {
     this.checkTypo = this.checkTypo.bind(this);
   }
 
+  componentDidMount() {
+    const { textToRead } = this.props;
+    // setTimeout(
+    //   this.setState({
+    //     infoMsg: textToRead,
+    //   }),
+    //   1000,
+    // );
+  }
+
   handleEvent(event) {
     const inputTypeNotNormalized = document.querySelector('.inputType').value;
 
@@ -105,6 +115,7 @@ export default class InputText extends React.Component {
 
   render() {
     const { infoMsg } = this.state;
+    const { textToRead } = this.props;
 
     return (
       <div>
@@ -117,7 +128,7 @@ export default class InputText extends React.Component {
               padding: '.8em .5em',
             }}
           >
-            {infoMsg}
+            {textToRead}
           </div>
           <div>
             <input

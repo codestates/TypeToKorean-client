@@ -18,7 +18,20 @@ export default class Stat2 extends React.Component {
             {
               ticks: {
                 min: 0,
-                max: 100,
+                max: 50,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              barPercentage: 1.0,
+              categoryPercentage: 1.0,
+              gridLines: {
+                display: false,
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Average Speed',
               },
             },
           ],
@@ -35,6 +48,7 @@ export default class Stat2 extends React.Component {
         ],
       },
     });
+    console.log(this.myChart);
   }
 
   componentDidUpdate() {

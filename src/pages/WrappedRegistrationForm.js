@@ -33,7 +33,8 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        fetch('http://3.133.156.53:5000/signin', {
+        fetch('http://localhost:5000/signin', {
+          // 3.133.156.53:5000
           method: 'POST',
           body: JSON.stringify(values),
           headers: {

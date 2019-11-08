@@ -21,12 +21,12 @@ class LoginRender extends React.Component {
   };
 
   logoutButton = () => {
-    fetch('http://localhost:5000/logout', {
+    fetch('http://3.133.156.53:5000/logout', {
       method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
-      credentials: "include"
+      credentials: 'include',
     }).then(response => {
       message.success('성공적으로 로그아웃 되었습니다!', 2.5);
       this.props.handleLogoutState();

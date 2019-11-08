@@ -48,7 +48,7 @@ export default class App extends Component {
 
   userinfoClick() {
     // 로그인 상태를 확인하는 get요청을 한번 더 보내는게 좋을 것 같다.
-    fetch('http://localhost:5000/users/id', {
+    fetch('http://3.133.156.53:5000/users/id', {
       method: 'GET',
     })
       .then(response => {

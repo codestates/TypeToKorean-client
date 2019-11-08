@@ -38,7 +38,7 @@ export default class ShortSentencePractice extends Component {
   }
 
   async getTextToWrite() {
-    const data = await window.fetch('http://localhost:5000/sample');
+    const data = await window.fetch('http://3.133.156.53:5000/sample');
     const parseData = await data.json();
     this.setState({
       data: parseData,
@@ -91,15 +91,15 @@ export default class ShortSentencePractice extends Component {
       totaltime,
     };
 
-   if (loginComplete) {
+    if (loginComplete) {
       window
-        .fetch('http://localhost:5000/typeInformation/id', {
+        .fetch('http://3.133.156.53:5000/typeInformation/id', {
           method: 'POST',
           body: JSON.stringify(result),
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
           },
-          credentials: "include"
+          credentials: 'include',
         })
         .then(res => res.json())
         .catch(err => console.log(err));

@@ -10,6 +10,8 @@
 
 # production
 /build
+/build 퍼블릭 ip
+/build 퍼블릭 주소
 
 # misc
 .DS_Store

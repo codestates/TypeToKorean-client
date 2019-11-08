@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
+import { Card } from 'antd';
 import BriefInfo from '../components/userInfo/BriefInfo';
 import Stat1 from '../components/userInfo/Stat1';
 import Stat2 from '../components/userInfo/Stat2';
-import { Card } from 'antd';
 
 class UserInfo extends Component {
   constructor(props) {
@@ -52,7 +52,7 @@ class UserInfo extends Component {
   }
 
   getUserInfo() {
-    fetch('http://localhost:5000/users/id')
+    fetch('http://3.133.156.53:5000/users/id')
       .then(res => res.json())
       .then(json => {
         this.setState({

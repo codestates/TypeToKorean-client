@@ -10,7 +10,7 @@ import UserInfo from './pages/UserInfo';
 import Log from './components/login/Log';
 import WrappedRegistrationForm from './pages/WrappedRegistrationForm';
 import WrappedSignoutForm from './pages/WrappedSignoutForm';
-// import Menu from './components/Menu';
+import history from './history';
 
 const { Content, Sider } = Layout;
 
@@ -28,6 +28,20 @@ export default class App extends Component {
 
     this.handleLoginState = this.handleLoginState.bind(this);
     this.handleLogoutState = this.handleLogoutState.bind(this);
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:5000/logout', {
+      //  3.133.156.53:5000
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    }).then(response => {
+      this.handleLogoutState();
+      return response.json();
+    });
   }
 
   handleLoginState(id, username, image) {
@@ -50,7 +64,7 @@ export default class App extends Component {
 
     return (
       <div>
-        <Router>
+        <Router history={history}>
           <Layout style={{ minHeight: '100vh' }}>
             <Col
               span={19}

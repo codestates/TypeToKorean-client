@@ -18,7 +18,6 @@ import {
   Card,
   Typography,
 } from 'antd';
-import history from '../history';
 
 const { confirm } = Modal;
 const { Option } = Select;
@@ -60,7 +59,6 @@ class RegistrationForm extends React.Component {
               // message.error('다시 적어주세요!', 2.5);
             } else {
               message.success('성공적으로 가입 되었습니다!', 2.5);
-              history.push('/');
               console.log(json);
             }
           });

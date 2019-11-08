@@ -15,7 +15,6 @@ import {
   Typography,
   Card,
 } from 'antd';
-import history from '../history';
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -57,7 +56,6 @@ class SignoutForm extends React.Component {
             } else {
               message.success('성공적으로 회원탈퇴가 완료되었습니다.', 3);
               handleLogoutState();
-              history.push('/');
               console.log(json);
             }
           });

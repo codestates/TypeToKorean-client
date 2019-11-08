@@ -37,7 +37,8 @@ class SignoutForm extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         values.created_at = String(new Date());
-        fetch('http://3.133.156.53:5000/signout', {
+        fetch('http://localhost:5000/signout', {
+          // 3.133.156.53:5000
           method: 'POST',
           body: JSON.stringify(values),
           headers: {

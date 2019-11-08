@@ -21,7 +21,8 @@ class LoginRender extends React.Component {
   };
 
   logoutButton = () => {
-    fetch('http://3.133.156.53:5000/logout', {
+    fetch('http://localhost:5000/logout', {
+      //  3.133.156.53:5000
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +63,7 @@ class LoginRender extends React.Component {
             <Title level={4}>Username : something wrong!</Title>
           )}
         </div>
-        <br></br>
+        <br />
         <div>
           <Button
             type="primary"

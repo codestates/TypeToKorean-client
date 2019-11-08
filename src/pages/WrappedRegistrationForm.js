@@ -33,13 +33,13 @@ class RegistrationForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        fetch('http://localhost:5000/signin', {
+        fetch('http://3.133.156.53:5000/signin', {
           method: 'POST',
           body: JSON.stringify(values),
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
           },
-          credentials: "include"
+          credentials: 'include',
         })
           .then(response => {
             if (!response) {
@@ -49,7 +49,7 @@ class RegistrationForm extends React.Component {
           })
           .then(json => {
             if (!json) {
-              //message.error('다시 적어주세요!', 2.5);
+              // message.error('다시 적어주세요!', 2.5);
             } else {
               message.success('성공적으로 가입 되었습니다!', 2.5);
               console.log(json);

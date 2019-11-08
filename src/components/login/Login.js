@@ -18,13 +18,13 @@ class NormalLoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        fetch('http://localhost:5000/login', {
+        fetch('http://3.133.156.53:5000/login', {
           method: 'POST',
           body: JSON.stringify(values),
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
           },
-          credentials: "include"
+          credentials: 'include',
         })
           .then(response => {
             console.log(values);

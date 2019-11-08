@@ -52,7 +52,7 @@ class UserInfo extends Component {
   }
 
   getUserInfo() {
-    fetch('http://3.133.156.53:5000/users/id')
+    fetch('http://localhost:5000/users/id') //3.133.156.53:5000
       .then(res => res.json())
       .then(json => {
         this.setState({

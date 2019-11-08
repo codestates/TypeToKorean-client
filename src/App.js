@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Menu, Layout } from 'antd';
+import { Col, Menu, Layout } from 'antd';
 import 'antd/dist/antd.css';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
@@ -10,9 +10,8 @@ import UserInfo from './pages/UserInfo';
 import Log from './components/login/Log';
 import WrappedRegistrationForm from './pages/WrappedRegistrationForm';
 import WrappedSignoutForm from './pages/WrappedSignoutForm';
-// import Menu from './components/Menu';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Sider } = Layout;
 
 export default class App extends Component {
   constructor(props) {
@@ -28,7 +27,20 @@ export default class App extends Component {
 
     this.handleLoginState = this.handleLoginState.bind(this);
     this.handleLogoutState = this.handleLogoutState.bind(this);
-    this.userinfoClick = this.userinfoClick.bind(this);
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:5000/logout', {
+      //  3.133.156.53:5000
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    }).then(response => {
+      this.handleLogoutState();
+      return response.json();
+    });
   }
 
   handleLoginState(id, username, image) {
@@ -46,40 +58,8 @@ export default class App extends Component {
     });
   }
 
-  userinfoClick() {
-    // 로그인 상태를 확인하는 get요청을 한번 더 보내는게 좋을 것 같다.
-    fetch('http://3.133.156.53:5000/users/id', {
-      method: 'GET',
-    })
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        console.log(json);
-      });
-  }
-
-  handleUserinfoCheck(id, username, image, email, phone) {
-    if (this.state.loginComplete) {
-      this.setState({
-        loginId: id,
-        loginUserName: username,
-        loginImage: image,
-        loginEmail: email,
-        loginPhone: phone,
-      });
-    }
-  }
-
   render() {
-    const {
-      loginId,
-      loginUserName,
-      loginComplete,
-      loginImage,
-      loginEmail,
-      loginPhone,
-    } = this.state;
+    const { loginId, loginUserName, loginComplete, loginImage } = this.state;
 
     return (
       <div>
@@ -184,14 +164,3 @@ export default class App extends Component {
     );
   }
 }
-// Main, Char, Word에 다른 prop를 내려줘서
-
-// <Link to="/">
-// <Button>Main</Button>
-// </Link>
-// <Link to="/char">
-// <Button>Char</Button>
-// </Link>
-// <Link to="/word">
-// <Button>Word</Button>
-// </Link>

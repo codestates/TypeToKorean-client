@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
   Form,
   Input,
@@ -22,22 +21,25 @@ const { Title } = Typography;
 const AutoCompleteOption = AutoComplete.Option;
 
 class SignoutForm extends React.Component {
-  constructor({ history }) {
-    super({ history });
+  constructor(props) {
+    super(props);
     this.state = { confirmDirty: false, autoCompleteResult: [] };
   }
 
-  /*state = {
+  /* state = {
     confirmDirty: false,
     autoCompleteResult: [],
-  };*/
+  }; */
 
   handleSubmit = e => {
+    const { form, handleLogoutState } = this.props;
+
     e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
+    form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         values.created_at = String(new Date());
-        fetch('http://3.133.156.53:5000/signout', {
+        fetch('http://localhost:5000/signout', {
+          // 3.133.156.53:5000
           method: 'POST',
           body: JSON.stringify(values),
           headers: {
@@ -53,8 +55,7 @@ class SignoutForm extends React.Component {
               message.error('회원탈퇴에 실패하였습니다.', 3);
             } else {
               message.success('성공적으로 회원탈퇴가 완료되었습니다.', 3);
-              this.props.handleLogoutState();
-              this.history.push('/');
+              handleLogoutState();
               console.log(json);
             }
           });

@@ -1,4 +1,5 @@
 import React from 'react';
+
 import { Link } from 'react-router-dom';
 import {
   Form,
@@ -24,21 +25,22 @@ const { Title } = Typography;
 const AutoCompleteOption = AutoComplete.Option;
 
 class RegistrationForm extends React.Component {
-  constructor({ history }) {
-    super({ history });
+  constructor(props) {
+    super(props);
     this.state = { confirmDirty: false, autoCompleteResult: [] };
   }
 
-  /*state = {
+  /* state = {
     confirmDirty: false,
     autoCompleteResult: [],
-  };*/
+  }; */
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        fetch('http://3.133.156.53:5000/signin', {
+        fetch('http://localhost:5000/signin', {
+          // 3.133.156.53:5000
           method: 'POST',
           body: JSON.stringify(values),
           headers: {
@@ -57,7 +59,6 @@ class RegistrationForm extends React.Component {
               // message.error('다시 적어주세요!', 2.5);
             } else {
               message.success('성공적으로 가입 되었습니다!', 2.5);
-              this.history.push('/');
               console.log(json);
             }
           });

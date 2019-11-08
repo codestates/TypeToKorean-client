@@ -24,10 +24,15 @@ const { Title } = Typography;
 const AutoCompleteOption = AutoComplete.Option;
 
 class RegistrationForm extends React.Component {
-  state = {
+  constructor({ history }) {
+    super({ history });
+    this.state = { confirmDirty: false, autoCompleteResult: [] };
+  }
+
+  /*state = {
     confirmDirty: false,
     autoCompleteResult: [],
-  };
+  };*/
 
   handleSubmit = e => {
     e.preventDefault();
@@ -52,6 +57,7 @@ class RegistrationForm extends React.Component {
               // message.error('다시 적어주세요!', 2.5);
             } else {
               message.success('성공적으로 가입 되었습니다!', 2.5);
+              this.history.push('/');
               console.log(json);
             }
           });

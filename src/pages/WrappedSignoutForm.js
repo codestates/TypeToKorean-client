@@ -22,10 +22,15 @@ const { Title } = Typography;
 const AutoCompleteOption = AutoComplete.Option;
 
 class SignoutForm extends React.Component {
-  state = {
+  constructor({ history }) {
+    super({ history });
+    this.state = { confirmDirty: false, autoCompleteResult: [] };
+  }
+
+  /*state = {
     confirmDirty: false,
     autoCompleteResult: [],
-  };
+  };*/
 
   handleSubmit = e => {
     e.preventDefault();
@@ -45,9 +50,11 @@ class SignoutForm extends React.Component {
           })
           .then(json => {
             if (!json) {
-              message.error('fail!', 3);
+              message.error('회원탈퇴에 실패하였습니다.', 3);
             } else {
-              message.success('success!', 3);
+              message.success('성공적으로 회원탈퇴가 완료되었습니다.', 3);
+              this.props.handleLogoutState();
+              this.history.push('/');
               console.log(json);
             }
           });

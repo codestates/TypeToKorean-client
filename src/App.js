@@ -129,7 +129,9 @@ export default class App extends Component {
                   )}
 
                   <Route path="/signout">
-                    <WrappedSignoutForm />
+                    <WrappedSignoutForm
+                      handleLogoutState={this.handleLogoutState}
+                    />
                   </Route>
                 </Switch>
               </Content>

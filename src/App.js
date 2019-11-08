@@ -10,7 +10,6 @@ import UserInfo from './pages/UserInfo';
 import Log from './components/login/Log';
 import WrappedRegistrationForm from './pages/WrappedRegistrationForm';
 import WrappedSignoutForm from './pages/WrappedSignoutForm';
-import history from './history';
 
 const { Content, Sider } = Layout;
 
@@ -64,7 +63,7 @@ export default class App extends Component {
 
     return (
       <div>
-        <Router history={history}>
+        <Router>
           <Layout style={{ minHeight: '100vh' }}>
             <Col
               span={19}

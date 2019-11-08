@@ -128,7 +128,7 @@ export default class InputText extends React.Component {
               padding: '.8em .5em',
             }}
           >
-            {textToRead}
+            {textToRead || infoMsg}
           </div>
           <div>
             <input

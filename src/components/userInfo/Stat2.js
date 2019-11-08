@@ -12,6 +12,22 @@ export default class Stat2 extends React.Component {
     this.myChart = new Chart(this.canvasRef.current, {
       type: 'bar',
       options: {
+        annotation: {
+          annotations: [
+            {
+              type: 'line',
+              mode: 'vertical',
+              scaleID: 'x-axis-0',
+              value: '70%',
+              borderColor: 'red',
+              label: {
+                content: 'Your Average Speed',
+                enabled: true,
+                position: 'center',
+              },
+            },
+          ],
+        },
         maintainAspectRatio: true,
         scales: {
           yAxes: [

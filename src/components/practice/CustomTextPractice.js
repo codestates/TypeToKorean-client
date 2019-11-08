@@ -9,8 +9,8 @@ export default class CustomSentencePractice extends Component {
     super(props);
     this.state = {
       data: '',
-      textToWrite: '소소하지만 확실한 행복.'.normalize('NFD'),
-      textToWriteNotNormalized: '소소하지만 확실한 행복.',
+      textToWrite: '커스텀 텍스트를 작성해주세요!'.normalize('NFD').trim(),
+      textToWriteNotNormalized: '커스텀 텍스트를 작성해주세요!'.trim(),
       speed: 0,
       typo: 0,
       score: 0,
@@ -45,18 +45,21 @@ export default class CustomSentencePractice extends Component {
     });
   }
 
-  scoring(speed, typo, totaltime) {
+  async scoring(speed, typo, totaltime) {
     const score = (speed * 100) / ((typo + 1) * 1.3);
     this.postingResult(speed, typo, totaltime, score);
-    const { data, textCountX, textCountY } = this.state;
-    this.setState({
-      textCountY: textCountY + 1,
-    });
 
-    if (!data[textCountX][textCountY + 1]) {
+    const { data, dataEn, textCountX, textCountY } = this.state;
+
+    const newcount = textCountY + 1;
+
+    if (!data[0][newcount]) {
       this.setState({
-        textCountX: 0,
         textCountY: 0,
+      });
+    } else {
+      this.setState({
+        textCountY: newcount,
       });
     }
 
@@ -65,8 +68,8 @@ export default class CustomSentencePractice extends Component {
       speed,
       typo,
       score,
-      textToWrite: data[textCountX][textCountY].normalize('NFD'),
-      textToWriteNotNormalized: data[textCountX][textCountY],
+      textToWrite: data[0][newcount].normalize('NFD').trim(),
+      textToWriteNotNormalized: data[0][newcount].trim(),
     });
 
     document.querySelector('.inputType').value = null;
@@ -106,7 +109,7 @@ export default class CustomSentencePractice extends Component {
     const resultArray = [];
     const newArray = [];
     for (let i = 0; i < value.length; i += 40) {
-      newArray.push(value.slice(i, i + 40));
+      newArray.push(value.slice(i, i + 40).trim());
     }
     resultArray.push(newArray);
     // if (newArray.length > 5){
@@ -116,9 +119,9 @@ export default class CustomSentencePractice extends Component {
     //   }
     // }
     this.setState({
-      data: newArray,
-      textToWrite: newArray[0][0].normalize('NFD'),
-      textToWriteNotNormalized: newArray[0][0],
+      data: resultArray,
+      textToWrite: resultArray[0][0].normalize('NFD').trim(),
+      textToWriteNotNormalized: resultArray[0][0].trim(),
     });
   } // CustomText 등록
 
@@ -143,11 +146,7 @@ export default class CustomSentencePractice extends Component {
               style={{ textAlign: 'center' }}
             />
           </p>
-          <Search
-            placeholder="여기에 커스텀 텍스트를 작성하세요."
-            onSearch={value => this.submitCustomText(value)}
-            enterButton
-          />
+
           <p>
             <PracticeScreen
               textToWrite={textToWrite}
@@ -157,6 +156,17 @@ export default class CustomSentencePractice extends Component {
               getTextToWrite={this.getTextToWrite}
             />
           </p>
+          <Search
+            style={{
+              width: '100%',
+              height: '10vh',
+              marginTop: '10px',
+            }}
+            placeholder="여기에 커스텀 텍스트를 작성하세요"
+            enterButton="Enter"
+            size="large"
+            onSearch={value => this.submitCustomText(value)}
+          />
         </Card>
       </div>
     );

@@ -11,7 +11,7 @@ import Log from './components/login/Log';
 import WrappedRegistrationForm from './pages/WrappedRegistrationForm';
 import WrappedSignoutForm from './pages/WrappedSignoutForm';
 
-const { Content, Sider } = Layout;
+const { Content, Sider, Card } = Layout;
 
 export default class App extends Component {
   constructor(props) {
@@ -145,7 +145,6 @@ export default class App extends Component {
                   <Menu.Item key="3">
                     <Link to="/custom">커스텀 글 연습</Link>
                   </Menu.Item>
-
                   {this.state.loginComplete ? (
                     <Menu.Item key="4">
                       <Link to="/info">회원정보</Link>
@@ -155,6 +154,7 @@ export default class App extends Component {
                       <Link to="/signin">회원가입</Link>
                     </Menu.Item>
                   )}
+                  <Menu.Item key="6">Created by Team TypeToKorean</Menu.Item>
                 </Menu>
               </Sider>
             </Col>

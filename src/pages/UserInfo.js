@@ -13,13 +13,15 @@ class UserInfo extends Component {
     this.state = {
       UserInfoIsLoading: false,
       data: [],
+      bestData: {},
       briefInfo: '',
     };
 
-    // this.getData = this.getData.bind(this);
     this.getStat1 = this.getStat1.bind(this);
     this.getStat2 = this.getStat2.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
+    this.miliSecondsToTime = this.miliSecondsToTime.bind(this);
+    this.getBestUser = this.getBestUser.bind(this);
   }
 
   async componentDidMount() {
@@ -31,20 +33,30 @@ class UserInfo extends Component {
         UserInfoIsLoading: false,
         data: await this.getStat2(),
       });
-      console.log(this.state.data);
+
+      await this.getStat1();
+      await this.getBestUser();
+      console.log(this.state.bestData);
     } catch (error) {
       console.log('userInfo.js componentDidMount error', error);
     }
-    await this.getStat1();
     // window.setInterval(() => {
     //   this.setState({
     //     data: this.getStat2(),
     //   });
+    //   console.log('setInterval worked');
     // }, 5000);
   }
 
   async getStat1() {
-    const data = await window.fetch('http://localhost:5000/profile'); // 3.133.156.53:5000
+    const data = await window.fetch('http://localhost:5000/profile', {
+      //  3.133.156.53:5000
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    }); // 3.133.156.53:5000
     const fetchedData = await data.json();
     this.setState({
       briefInfo: fetchedData,
@@ -53,8 +65,13 @@ class UserInfo extends Component {
   }
 
   async getStat2() {
-    // Create random array of objects (with date)
-    const data = await window.fetch('http://localhost:5000/statistics'); // 3.133.156.53:5000
+    const data = await window.fetch('http://localhost:5000/statistics', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    }); // 3.133.156.53:5000
     const fetchedData = await data.json();
     this.setState({
       data: fetchedData,
@@ -86,6 +103,20 @@ class UserInfo extends Component {
     return this.result;
   }
 
+  async getBestUser() {
+    const data = await window.fetch('http://localhost:5000/getBestUser', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+    }); // 3.133.156.53:5000
+    const fetchedData = await data.json();
+    this.setState({
+      bestData: fetchedData,
+    });
+  }
+
   getUserInfo() {
     fetch('http://localhost:5000/users/id') // 3.133.156.53:5000
       .then(res => res.json())
@@ -94,6 +125,18 @@ class UserInfo extends Component {
           userInfo: json,
         });
       });
+  }
+
+  miliSecondsToTime(duration) {
+    let seconds = parseInt((duration / 1000) % 60);
+    let minutes = parseInt((duration / (1000 * 60)) % 60);
+    let hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+    hours = hours < 10 ? `0${hours}` : hours;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    seconds = seconds < 10 ? `0${seconds}` : seconds;
+
+    return `${hours}:${minutes}:${Math.round(seconds)}`;
   }
 
   render() {
@@ -106,11 +149,22 @@ class UserInfo extends Component {
           phone={briefInfo.phone}
         />
         <br />
-        <Stat1 />
+        <br />
+        <Stat1
+          totalTime={this.miliSecondsToTime(briefInfo.totalTime)}
+          totalScore={briefInfo.totalScore}
+          avgTypeSpeed={Math.round(briefInfo.avgTypeSpeed)}
+          bestTypeSpeed={briefInfo.bestTypeSpeed}
+          totalTypo={briefInfo.total}
+          avgTypo={briefInfo.avgTypo}
+        />
+        <br />
         <br />
         <WarppedStat2
           data={data}
           UserInfoIsLoading={UserInfoIsLoading}
+          avgTypeSpeed={Math.round(briefInfo.avgTypeSpeed)}
+          bestTypeSpeed={briefInfo.bestTypeSpeed}
           title="Typing Korean, You vs. World"
           color="#70CAD1"
         />

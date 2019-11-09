@@ -12,34 +12,26 @@ export default class Stat2 extends React.Component {
     this.myChart = new Chart(this.canvasRef.current, {
       type: 'bar',
       options: {
-        annotation: {
-          annotations: [
-            {
-              type: 'line',
-              mode: 'vertical',
-              scaleID: 'x-axis-0',
-              value: '70%',
-              borderColor: 'red',
-              label: {
-                content: 'Your Average Speed',
-                enabled: true,
-                position: 'center',
-              },
-            },
-          ],
-        },
         maintainAspectRatio: true,
+        legend: {
+          display: true,
+        },
+        tooltips: {
+          enabled: false,
+        },
         scales: {
           yAxes: [
             {
+              display: true,
               ticks: {
                 min: 0,
-                max: 50,
+                max: Math.max.apply(null, this.props.data.map(d => d.value)),
               },
             },
           ],
           xAxes: [
             {
+              display: true,
               barPercentage: 1.0,
               categoryPercentage: 1.0,
               gridLines: {
@@ -49,6 +41,19 @@ export default class Stat2 extends React.Component {
                 display: true,
                 labelString: 'Average Speed',
               },
+            },
+          ],
+        },
+        annotation: {
+          annotations: [
+            {
+              drawTime: 'afterDatasetsDraw',
+              type: 'line',
+              mode: 'vertical',
+              scaleID: 'y-axis-0',
+              value: '100',
+              borderColor: 'red',
+              borderWidth: 5,
             },
           ],
         },

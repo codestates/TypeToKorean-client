@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import { Card } from 'antd';
 import PracticeData from './PracticeData';
 import PracticeScreen from './PracticeScreen';
@@ -18,6 +17,9 @@ export default class ShortSentencePractice extends Component {
       speed: 0,
       typo: 0,
       score: 0,
+      prevSpeed: 0,
+      prevTypo: 0,
+      prevScore: 0,
       textCountX: 0,
       textCountY: 0,
     };
@@ -59,20 +61,22 @@ export default class ShortSentencePractice extends Component {
   }
 
   async scoring(speed, typo, totaltime) {
+    const { data, dataEn, textCountX, textCountY } = this.state;
     const score = (speed * 100) / ((typo + 1) * 1.3);
+    this.setState({
+      prevSpeed: speed - this.state.speed,
+      prevTypo: typo - this.state.typo,
+      prevScore: score - this.state.score,
+    });
     this.postingResult(speed, typo, totaltime, score);
 
-    const { data, dataEn, textCountX, textCountY } = this.state;
-
-    this.setState({
-      textCountX: textCountX + 1,
-    });
-
-    if (!data[textCountX][0]) {
-      this.setState({
-        textCountX: 0,
-      });
-    }
+    textCountX + 1 < data.length
+      ? this.setState({
+          textCountX: textCountX + 1,
+        })
+      : this.setState({
+          textCountX: 0,
+        });
 
     this.setState({
       totaltime,
@@ -124,6 +128,9 @@ export default class ShortSentencePractice extends Component {
       score,
       speed,
       typo,
+      prevScore,
+      prevSpeed,
+      prevTypo,
     } = this.state;
 
     return (
@@ -134,6 +141,9 @@ export default class ShortSentencePractice extends Component {
               speed={speed}
               typo={typo}
               score={score}
+              prevScore={prevScore}
+              prevSpeed={prevSpeed}
+              prevTypo={prevTypo}
               style={{ textAlign: 'center' }}
             />
           </p>

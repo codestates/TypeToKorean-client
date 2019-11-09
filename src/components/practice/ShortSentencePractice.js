@@ -105,7 +105,7 @@ export default class ShortSentencePractice extends Component {
 
     if (loginComplete) {
       window
-        .fetch('http://localhost:5000/typeInformation/id', {
+        .fetch('http://3.133.156.53:5000typeInformation/id', {
           // 3.133.156.53:5000
           method: 'POST',
           body: JSON.stringify(result),

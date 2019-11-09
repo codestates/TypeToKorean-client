@@ -20,28 +20,13 @@ export default class CustomSentencePractice extends Component {
 
     this.scoring = this.scoring.bind(this);
     this.postingResult = this.postingResult.bind(this);
-    this.getTextToWrite = this.getTextToWrite.bind(this);
     this.submitCustomText = this.submitCustomText.bind(this);
   }
 
   async componentDidMount() {
-    console.log('compomentDiDMount on CustomSentencePractice');
-    // await this.getTextToWrite();
-    const { data } = this.state;
-
-    // this.setState({
-    //   textToWrite: data[0][0].normalize('NFD'),
-    //   textToWriteNotNormalized: data[0][0],
-    //   textCountX: 0,
-    //   textCountY: 1,
-    // });
-  }
-
-  async getTextToWrite() {
-    const data = await window.fetch('http://localhost:5000/sample/custom'); //  3.133.156.53:5000
-    const parseData = await data.json();
     this.setState({
-      data: parseData,
+      textCountX: 0,
+      textCountY: 1,
     });
   }
 
@@ -49,27 +34,33 @@ export default class CustomSentencePractice extends Component {
     const score = (speed * 100) / ((typo + 1) * 1.3);
     this.postingResult(speed, typo, totaltime, score);
 
-    const { data, dataEn, textCountX, textCountY } = this.state;
+    const { data, textCountX, textCountY } = this.state;
 
-    const newcount = textCountY + 1;
+    textCountY + 1 < data[0].length
+      ? this.setState({
+          textCountY: textCountY + 1,
+        })
+      : this.setState({
+          textCountY: 0,
+        });
 
-    if (!data[0][newcount]) {
-      this.setState({
-        textCountY: 0,
-      });
-    } else {
-      this.setState({
-        textCountY: newcount,
-      });
-    }
+    // if (!data[0][newcount]) {
+    //   this.setState({
+    //     textCountY: 0,
+    //   });
+    // } else {
+    //   this.setState({
+    //     textCountY: newcount,
+    //   });
+    // }
 
     this.setState({
       totaltime,
       speed,
       typo,
       score,
-      textToWrite: data[0][newcount].normalize('NFD').trim(),
-      textToWriteNotNormalized: data[0][newcount].trim(),
+      textToWrite: data[0][textCountY].normalize('NFD').trim(),
+      textToWriteNotNormalized: data[0][textCountY].trim(),
     });
 
     document.querySelector('.inputType').value = null;
@@ -112,12 +103,7 @@ export default class CustomSentencePractice extends Component {
       newArray.push(value.slice(i, i + 40).trim());
     }
     resultArray.push(newArray);
-    // if (newArray.length > 5){
-    //   for (let i = 0; i < newArray.length; i += 1){
-    //     let resultArray = []
-    //     resultArray.push(newArray[i])
-    //   }
-    // }
+
     this.setState({
       data: resultArray,
       textToWrite: resultArray[0][0].normalize('NFD').trim(),

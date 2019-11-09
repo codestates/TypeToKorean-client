@@ -8,27 +8,27 @@ const { Title } = Typography;
 export default function BriefInfo({ username, email, phone }) {
   return (
     <Row>
-      <Row>
-        <Col span={12}>
+      <Row type="flex" justify="left">
+        <Col span={10}>
           <PicDiv />
         </Col>
         <Col span={12}>
           <Row>
-            <Title level={3}>Username:{username}</Title>
+            <Title level={4}>Username : {username}</Title>
           </Row>
           <Row>
-            <Title level={3}>Last Login:{}</Title>
+            <Title level={4}>Last Login : {}</Title>
           </Row>
           <Row>
-            <Title level={3}>E-Mail:{email}</Title>
+            <Title level={4}>E-Mail : {email}</Title>
           </Row>
           <Row>
-            <Title level={3}>Phone:{phone}</Title>
+            <Title level={4}>Phone : {phone}</Title>
           </Row>
         </Col>
       </Row>
-      <Row>
-        <Col span={12}>
+      <Row type="flex" justify="left">
+        <Col span={10}>
           <Button type="primary">Edit</Button>
         </Col>
         <Col span={12}>

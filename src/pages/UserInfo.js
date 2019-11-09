@@ -3,15 +3,18 @@ import { Card } from 'antd';
 import BriefInfo from '../components/userInfo/BriefInfo';
 import Stat1 from '../components/userInfo/Stat1';
 import Stat2 from '../components/userInfo/Stat2';
+import Stat1Warpper from '../components/userInfo/Stat1Warpper';
 import Stat2Warpper from '../components/userInfo/Stat2Warpper';
 
 const WarppedStat2 = Stat2Warpper(Stat2);
+const WarppedStat1 = Stat1Warpper(Stat1);
 
 class UserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
       UserInfoIsLoading: false,
+      BestInfoIsLoading: true,
       data: [],
       bestData: {},
       briefInfo: '',
@@ -28,14 +31,17 @@ class UserInfo extends Component {
     try {
       this.setState({
         UserInfoIsLoading: true,
+        BestInfoIsLoading: true,
       });
       this.setState({
         UserInfoIsLoading: false,
         data: await this.getStat2(),
       });
-
       await this.getStat1();
-      await this.getBestUser();
+      this.setState({
+        BestInfoIsLoading: false,
+        bestData: await this.getBestUser(),
+      });
       console.log(this.state.bestData);
     } catch (error) {
       console.log('userInfo.js componentDidMount error', error);
@@ -94,23 +100,12 @@ class UserInfo extends Component {
         value: countedNames[key],
       });
     }
-    // for (let i = 0; i < countedNames.length; i += 1) {
-    //   this.result.push({
-    //     label: countedNames[i].id,
-    //     value: Math.round(fetchedData[i].typeSpeed / 10) * 10,
-    //   });
-    // }
+
     return this.result;
   }
 
   async getBestUser() {
-    const data = await window.fetch('http://localhost:5000/getBestUser', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-    }); // 3.133.156.53:5000
+    const data = await window.fetch('http://localhost:5000/getBestUser'); // 3.133.156.53:5000
     const fetchedData = await data.json();
     this.setState({
       bestData: fetchedData,
@@ -140,7 +135,13 @@ class UserInfo extends Component {
   }
 
   render() {
-    const { data, UserInfoIsLoading, briefInfo } = this.state;
+    const {
+      data,
+      UserInfoIsLoading,
+      briefInfo,
+      bestData,
+      BestInfoIsLoading,
+    } = this.state;
     return (
       <Card style={{ marginBottom: 16, marginTop: 16 }}>
         <BriefInfo
@@ -150,13 +151,15 @@ class UserInfo extends Component {
         />
         <br />
         <br />
-        <Stat1
+        <WarppedStat1
+          BestInfoIsLoading={BestInfoIsLoading}
           totalTime={this.miliSecondsToTime(briefInfo.totalTime)}
           totalScore={briefInfo.totalScore}
           avgTypeSpeed={Math.round(briefInfo.avgTypeSpeed)}
           bestTypeSpeed={briefInfo.bestTypeSpeed}
           totalTypo={briefInfo.total}
           avgTypo={briefInfo.avgTypo}
+          bestData={bestData}
         />
         <br />
         <br />

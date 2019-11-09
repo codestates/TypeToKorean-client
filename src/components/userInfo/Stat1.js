@@ -5,11 +5,10 @@ const { Title } = Typography;
 
 export default function Stat1({
   totalTime,
-  totalScore,
   avgTypeSpeed,
   bestTypeSpeed,
-  totalTypo,
   avgTypo,
+  bestData,
 }) {
   return (
     <div style={{ textAlign: 'center' }}>
@@ -40,17 +39,17 @@ export default function Stat1({
         <Col span={12}>
           <div className="ant-statistic-title">
             Fastest Typist
-            <p className="ant-statistic-content">한상훈</p>
-            <p className="ant-statistic-content">한상훈</p>
-            <p className="ant-statistic-content">한상훈</p>
+            <p>한상훈 : 400</p>
+            <p>김홍식 : 300</p>
+            <p>신동호 : 200</p>
           </div>
         </Col>
         <Col span={12}>
           <div className="ant-statistic-title">
-            Fastest Typist
-            <p className="ant-statistic-content">한상훈</p>
-            <p className="ant-statistic-content">한상훈</p>
-            <p className="ant-statistic-content">한상훈</p>
+            Most Correct Typist
+            <p>한상훈 : 0.2</p>
+            <p>김홍식 : 0.3</p>
+            <p>신동호 : 0.4</p>
           </div>
         </Col>
       </Row>

@@ -3,56 +3,91 @@ import { Card } from 'antd';
 import BriefInfo from '../components/userInfo/BriefInfo';
 import Stat1 from '../components/userInfo/Stat1';
 import Stat2 from '../components/userInfo/Stat2';
+import Stat2Warpper from '../components/userInfo/Stat2Warpper';
+
+const WarppedStat2 = Stat2Warpper(Stat2);
 
 class UserInfo extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: this.getData(),
-      userInfo: '',
+      UserInfoIsLoading: false,
+      data: [],
+      briefInfo: '',
     };
 
-    this.getData = this.getData.bind(this);
-    this.getRandomDateArray = this.getRandomDateArray.bind(this);
+    // this.getData = this.getData.bind(this);
+    this.getStat1 = this.getStat1.bind(this);
+    this.getStat2 = this.getStat2.bind(this);
     this.getUserInfo = this.getUserInfo.bind(this);
   }
 
-  componentDidMount() {
-    window.setInterval(() => {
+  async componentDidMount() {
+    try {
       this.setState({
-        data: this.getData(),
+        UserInfoIsLoading: true,
       });
-    }, 5000);
+      this.setState({
+        UserInfoIsLoading: false,
+        data: await this.getStat2(),
+      });
+      console.log(this.state.data);
+    } catch (error) {
+      console.log('userInfo.js componentDidMount error', error);
+    }
+    await this.getStat1();
+    // window.setInterval(() => {
+    //   this.setState({
+    //     data: this.getStat2(),
+    //   });
+    // }, 5000);
   }
 
-  getData() {
-    this.data = [];
+  async getStat1() {
+    const data = await window.fetch('http://localhost:5000/profile'); // 3.133.156.53:5000
+    const fetchedData = await data.json();
+    this.setState({
+      briefInfo: fetchedData,
+    });
+    console.log('fetchedData stat1', fetchedData.username);
+  }
 
-    this.data.push({
-      title: 'Visits',
-      data: this.getRandomDateArray(20),
+  async getStat2() {
+    // Create random array of objects (with date)
+    const data = await window.fetch('http://localhost:5000/statistics'); // 3.133.156.53:5000
+    const fetchedData = await data.json();
+    this.setState({
+      data: fetchedData,
     });
 
-    return this.data;
-  }
+    const countedNames = fetchedData.reduce(function(allDatas, data) {
+      const typeSpeed10 = Math.round(data.typeSpeed / 10) * 10;
+      if (typeSpeed10 in allDatas) {
+        allDatas[typeSpeed10] += 1;
+      } else {
+        allDatas[typeSpeed10] = 1;
+      }
+      return allDatas;
+    }, {});
 
-  getRandomDateArray(numItems) {
-    // Create random array of objects (with date)
-    this.names = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    this.data = [];
-    this.baseTime = new Date('2018-05-01T00:00:00').getTime();
-    this.dayMs = 24 * 60 * 60 * 1000;
-    for (let i = 0; i < numItems; i += 1) {
-      this.data.push({
-        label: this.names[i],
-        value: Math.round(20 + 80 * Math.random()),
+    this.result = [];
+    for (const key in countedNames) {
+      this.result.push({
+        label: key,
+        value: countedNames[key],
       });
     }
-    return this.data;
+    // for (let i = 0; i < countedNames.length; i += 1) {
+    //   this.result.push({
+    //     label: countedNames[i].id,
+    //     value: Math.round(fetchedData[i].typeSpeed / 10) * 10,
+    //   });
+    // }
+    return this.result;
   }
 
   getUserInfo() {
-    fetch('http://localhost:5000/users/id') //3.133.156.53:5000
+    fetch('http://localhost:5000/users/id') // 3.133.156.53:5000
       .then(res => res.json())
       .then(json => {
         this.setState({
@@ -62,14 +97,23 @@ class UserInfo extends Component {
   }
 
   render() {
-    const { data } = this.state;
+    const { data, UserInfoIsLoading, briefInfo } = this.state;
     return (
       <Card style={{ marginBottom: 16, marginTop: 16 }}>
-        <BriefInfo />
+        <BriefInfo
+          username={briefInfo.username}
+          email={briefInfo.email}
+          phone={briefInfo.phone}
+        />
         <br />
         <Stat1 />
         <br />
-        <Stat2 Stat2 data={data} title="Visits" color="#70CAD1" />
+        <WarppedStat2
+          data={data}
+          UserInfoIsLoading={UserInfoIsLoading}
+          title="Typing Korean, You vs. World"
+          color="#70CAD1"
+        />
       </Card>
     );
   }
